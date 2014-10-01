@@ -1,8 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Enemy.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MouseDragMovement.cs">
     <Files>
-      <File FileName="Assets\Scripts\Enemy.cs" Line="24" Column="2" />
+      <File FileName="Assets\Scripts\MouseDragMovement.cs" Line="91" Column="1" />
+      <File FileName="Assets\Scripts\AttackBase.cs" Line="7" Column="37" />
+      <File FileName="Assets\Scripts\MouseDragMovement.cs" Line="63" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
