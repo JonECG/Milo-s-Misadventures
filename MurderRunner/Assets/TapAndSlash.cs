@@ -15,7 +15,11 @@ public class Touch
 	
 	public Vector3 calcWorldPoint()
 	{
-		return new Vector3( 0,0,0 );
+		Plane plane = new Plane( new Vector3( 0,1,0 ), 0 );
+		Ray r = Camera.main.ScreenPointToRay( new Vector3( x, y, 0 ) );
+		float dist = 100;
+		plane.Raycast( r, out dist );
+		return r.origin + r.direction*dist;
 	}
 }
 public class Swipe : Touch

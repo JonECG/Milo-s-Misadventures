@@ -16,6 +16,7 @@ public class TestTapSwipe : MonoBehaviour {
 		( 	
 			(Touch t1) => 
 			{
+				Debug.Log( "Woah: " + t1.calcWorldPoint().x + ", " + t1.calcWorldPoint().y + ", " + t1.calcWorldPoint().z );
 				Debug.Log( "Initial Tap" );
 				ts.Listen( 1,
 					(Touch t2) =>
