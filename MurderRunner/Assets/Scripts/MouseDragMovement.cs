@@ -25,7 +25,7 @@ public class MouseDragMovement : MonoBehaviour {
 
 		//Debug.Log ("test X: " + test.origin.x + " , Y: " + test.origin.y + " , Z: " + test.origin.z);
 		
-		Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
+		//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
 		
 		if (mouseIsClicked) {
 
@@ -33,7 +33,7 @@ public class MouseDragMovement : MonoBehaviour {
 								resolveIfPlayerHit ();
 						}
 						else if (playerWasClicked) {
-								Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
+								//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
 				
 
 								Vector3 newVelocity = (mouseWorldPosition-this.gameObject.transform.position); 
@@ -42,7 +42,7 @@ public class MouseDragMovement : MonoBehaviour {
 										newVelocity.z = 0 ; 
 								}
 						
-								Debug.Log ("New Velocity X: " + newVelocity.x + " , Y: " + newVelocity.y + " , Z: " + newVelocity.z);
+								//Debug.Log ("New Velocity X: " + newVelocity.x + " , Y: " + newVelocity.y + " , Z: " + newVelocity.z);
 						
 								
 						
@@ -66,7 +66,7 @@ public class MouseDragMovement : MonoBehaviour {
 
 	private void resolveCollision(RaycastHit hit)
 	{
-		Debug.Log("Had a Collision: " + hit.collider.gameObject.name);
+		//Debug.Log("Had a Collision: " + hit.collider.gameObject.name);
 
 		GameObject wasHit = hit.collider.gameObject;
 

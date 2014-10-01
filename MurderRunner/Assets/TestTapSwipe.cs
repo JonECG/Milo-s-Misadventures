@@ -9,6 +9,7 @@ public class TestTapSwipe : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Debug.Log( "Init!" );
+		this.gameObject.AddComponent<InitialSwipeAttack>();
 		
 		TapAndSlash ts = GetComponent<TapAndSlash>();
 		ts.Subscribe
@@ -34,7 +35,24 @@ public class TestTapSwipe : MonoBehaviour {
 			},
 			(Swipe s) =>
 			{
-				Debug.Log( "Initial Swipe" );
+				Vector2 start = new Vector2(s.beginX,s.beginY);
+				Vector2 end = new Vector2(s.endX,s.endY);
+
+
+
+				end = ((start-end)/ 2) + end;
+
+				Debug.Log("End X: " + end.x + " , Y: " + end.y ); 
+				 
+				
+
+				Ray r = Camera.main.ScreenPointToRay(end);
+
+
+				Vector3 onMap = r.GetPoint(Camera.main.gameObject.transform.position.y);
+
+
+				this.gameObject.GetComponent<InitialSwipeAttack>().attack (onMap, this.gameObject.transform.position);
 			}
 		);
 	}
