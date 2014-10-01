@@ -12,6 +12,11 @@ public class Touch
 		this.x = x;
 		this.y = y;
 	}
+	
+	public Vector3 calcWorldPoint()
+	{
+		return new Vector3( 0,0,0 );
+	}
 }
 public class Swipe : Touch
 {
