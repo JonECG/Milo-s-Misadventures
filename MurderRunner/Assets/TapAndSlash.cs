@@ -35,9 +35,11 @@ public class Swipe : Touch
 
 public class TapAndSlash : MonoBehaviour 
 {
+	public float tapEffectDuration = 0.4f;
 	public float minSwipeDistance = 60;
 	
 	public bool drawOnScreen = true;
+	public float drawScale = 0.1f;
 	
 	public Texture2D pointIndicator;
 	public Texture2D swipeIndicator;
@@ -45,6 +47,7 @@ public class TapAndSlash : MonoBehaviour
 	public IList history;
 	
 	bool listening;
+	float timeTapStart;
 	
 	Action<Touch> baseTapAction;
 	Action<Swipe> baseSwipeAction;
@@ -83,11 +86,13 @@ public class TapAndSlash : MonoBehaviour
 		point = pointGO.AddComponent<GUITexture>();
 		point.texture = pointIndicator;
 		point.pixelInset = new Rect( -pointIndicator.width/2, -pointIndicator.height/2, pointIndicator.width, pointIndicator.height );
+		point.transform.localScale = new Vector3( 0, 0, 1 );
 		
 		GameObject swipeGO = new GameObject();
 		swipe = swipeGO.AddComponent<GUITexture>();
 		swipe.texture = swipeIndicator;
 		swipe.pixelInset = new Rect( 0, -swipeIndicator.height/2, swipeIndicator.width, swipeIndicator.height );
+		swipe.transform.localScale = new Vector3( 0, 0, 1 );
 	}
 	
 	float mouseXDown, mouseYDown;
@@ -95,8 +100,8 @@ public class TapAndSlash : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 	
-		point.enabled = drawOnScreen;
-		swipe.enabled = drawOnScreen;
+		point.enabled = false;
+		swipe.enabled = false;
 		
 		if( listening )
 		{
@@ -111,15 +116,23 @@ public class TapAndSlash : MonoBehaviour
 		
 		if( trackingMouse )
 		{
+			float dir = (float) Math.Atan2( Input.mousePosition.y - mouseYDown, Input.mousePosition.x-mouseXDown );
+			float dist = (float) Math.Sqrt( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) );
+			
+			swipe.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
+			swipe.pixelInset = new Rect( 0, dist * (((float)swipeIndicator.height) / swipeIndicator.width )/2, dist, dist * (((float)swipeIndicator.height) / swipeIndicator.width ) );
+			swipe.transform.rotation = Quaternion.AngleAxis( dir, new Vector3( 0,0,1 ) );
+			
 			if( !Input.GetMouseButton( 0 ) )
 			{
+				timeTapStart = Time.time;
 				trackingMouse = false;
 				Action<Swipe> swiping = ( listening ) ? nextSwipeAction : baseSwipeAction;
 				Action<Touch> tapping = ( listening ) ? nextTapAction : baseTapAction;
 				
 				listening = false;
 				
-				if( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) > minSwipeDistance*minSwipeDistance )
+				if( dist > minSwipeDistance )
 				{
 					Swipe s = new Swipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
 					if( swiping != null )
@@ -141,9 +154,58 @@ public class TapAndSlash : MonoBehaviour
 		{
 			if( Input.GetMouseButton( 0 ) )
 			{
+				timeTapStart = Time.time;
 				trackingMouse = true;
 				mouseXDown = Input.mousePosition.x;
 				mouseYDown = Input.mousePosition.y;
+				point.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
+				point.pixelInset = new Rect( -Screen.height * drawScale/2, -Screen.height * drawScale/2, Screen.height * drawScale, Screen.height * drawScale );
+			}
+		}
+	}
+	
+	void drawSwipe( float x1, float y1, float x2, float y2 )
+	{
+		Matrix4x4 matrixBackup = GUI.matrix;
+		float dir = -Mathf.Atan2( y2 - y1, x2 - x1 )*Mathf.Rad2Deg;
+		float dist = Mathf.Sqrt( (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) );
+		
+		swipe.transform.position = new Vector3( x1/Screen.width, y1/Screen.height, 0 );
+		swipe.pixelInset = new Rect( 0, dist * (((float)swipeIndicator.height) / swipeIndicator.width )/2, dist, dist * (((float)swipeIndicator.height) / swipeIndicator.width ) );
+		swipe.transform.rotation = Quaternion.AngleAxis( dir, new Vector3( 0,0,1 ) );
+		
+		
+		GUIUtility.RotateAroundPivot( dir, new Vector2(x1,Screen.height - y1));
+		float height = Mathf.Min( dist*1.1f*(((float)swipeIndicator.height)) / swipeIndicator.width, Screen.height*drawScale );
+		GUI.DrawTexture(new Rect( x1, Screen.height - y1 - height/2, dist*1.1f, height ), swipeIndicator);
+		GUI.matrix = matrixBackup;
+	}
+	
+	void OnGUI()
+	{
+		float animationProgress = (Time.time - timeTapStart) / tapEffectDuration;
+		if( trackingMouse )
+		{
+			drawSwipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
+			
+			if( animationProgress < 1 )
+			{
+				Color orig = GUI.color;
+				GUI.color = new Color( 1.0f,1.0f,1.0f, animationProgress );
+				GUI.DrawTexture(new Rect( Input.mousePosition.x - 40*(1-animationProgress), Screen.height - Input.mousePosition.y - 40*(1-animationProgress), 80*(1-animationProgress), 80*(1-animationProgress) ), pointIndicator);
+				GUI.color = orig;
+			}
+		}
+		else
+		{
+			if( animationProgress < 1 )
+			{
+				drawSwipe( mouseXDown + (Input.mousePosition.x-mouseXDown)*animationProgress, mouseYDown + (Input.mousePosition.y-mouseYDown)*animationProgress, Input.mousePosition.x, Input.mousePosition.y );
+				
+				Color orig = GUI.color;
+				GUI.color = new Color( 1.0f,1.0f,1.0f, 1-animationProgress );
+				GUI.DrawTexture(new Rect( Input.mousePosition.x - 40*(2*animationProgress), Screen.height - Input.mousePosition.y - 40*(2*animationProgress), 80*(2*animationProgress), 80*(2*animationProgress) ), pointIndicator);
+				GUI.color = orig;
 			}
 		}
 	}
