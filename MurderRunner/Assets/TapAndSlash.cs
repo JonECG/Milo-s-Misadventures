@@ -61,6 +61,7 @@ public class TapAndSlash : MonoBehaviour
 	
 	public IList history;
 	
+	bool active = true;
 	bool listening;
 	float timeTapStart;
 	
@@ -90,10 +91,15 @@ public class TapAndSlash : MonoBehaviour
 	
 	public void disable()
 	{
+		active = false;
+		listening = false;
+		trackingMouse = false;
+		timeTapStart = Time.time;
 	}
 	
 	public void enable()
 	{
+		active = true;
 	}
 	
 	private GUITexture point, swipe;
@@ -126,63 +132,67 @@ public class TapAndSlash : MonoBehaviour
 		point.enabled = false;
 		swipe.enabled = false;
 		
-		if( listening )
+		if( active )
 		{
-			if( Time.time > timeEnd )
-			{
-				if( nextNoAction != null )
-					nextNoAction();
-				listening = false;
-				history.Clear();
-			}
-		}
-		
-		if( trackingMouse )
-		{
-			float dir = (float) Math.Atan2( Input.mousePosition.y - mouseYDown, Input.mousePosition.x-mouseXDown );
-			float dist = (float) Math.Sqrt( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) );
 			
-			swipe.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
-			swipe.pixelInset = new Rect( 0, dist * (((float)swipeIndicator.height) / swipeIndicator.width )/2, dist, dist * (((float)swipeIndicator.height) / swipeIndicator.width ) );
-			swipe.transform.rotation = Quaternion.AngleAxis( dir, new Vector3( 0,0,1 ) );
-			
-			if( !Input.GetMouseButton( 0 ) )
+			if( listening )
 			{
-				timeTapStart = Time.time;
-				trackingMouse = false;
-				Action<Swipe> swiping = ( listening ) ? nextSwipeAction : baseSwipeAction;
-				Action<Touch> tapping = ( listening ) ? nextTapAction : baseTapAction;
-				
-				listening = false;
-				
-				if( dist > minSwipeDistance )
+				if( Time.time > timeEnd )
 				{
-					Swipe s = new Swipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
-					if( swiping != null )
-						swiping(s);
-					history.Add( s );
-				}
-				else
-				{
-					Touch t = new Touch( Input.mousePosition.x, Input.mousePosition.y );
-					if( tapping != null )
-						tapping(t);
-					history.Add( t );
-				}
-				if( !listening )
+					if( nextNoAction != null )
+						nextNoAction();
+					listening = false;
 					history.Clear();
+				}
 			}
-		}
-		else
-		{
-			if( Input.GetMouseButton( 0 ) )
+			
+			if( trackingMouse )
 			{
-				timeTapStart = Time.time;
-				trackingMouse = true;
-				mouseXDown = Input.mousePosition.x;
-				mouseYDown = Input.mousePosition.y;
-				point.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
-				point.pixelInset = new Rect( -Screen.height * drawScale/2, -Screen.height * drawScale/2, Screen.height * drawScale, Screen.height * drawScale );
+				float dir = (float) Math.Atan2( Input.mousePosition.y - mouseYDown, Input.mousePosition.x-mouseXDown );
+				float dist = (float) Math.Sqrt( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) );
+				
+				swipe.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
+				swipe.pixelInset = new Rect( 0, dist * (((float)swipeIndicator.height) / swipeIndicator.width )/2, dist, dist * (((float)swipeIndicator.height) / swipeIndicator.width ) );
+				swipe.transform.rotation = Quaternion.AngleAxis( dir, new Vector3( 0,0,1 ) );
+				
+				if( !Input.GetMouseButton( 0 ) )
+				{
+					timeTapStart = Time.time;
+					trackingMouse = false;
+					Action<Swipe> swiping = ( listening ) ? nextSwipeAction : baseSwipeAction;
+					Action<Touch> tapping = ( listening ) ? nextTapAction : baseTapAction;
+					
+					listening = false;
+					
+					if( dist > minSwipeDistance )
+					{
+						Swipe s = new Swipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
+						if( swiping != null )
+							swiping(s);
+						history.Add( s );
+					}
+					else
+					{
+						Touch t = new Touch( Input.mousePosition.x, Input.mousePosition.y );
+						if( tapping != null )
+							tapping(t);
+						history.Add( t );
+					}
+					if( !listening )
+						history.Clear();
+				}
+			}
+			else
+			{
+				if( Input.GetMouseButton( 0 ) )
+				{
+					timeTapStart = Time.time;
+					trackingMouse = true;
+					mouseXDown = Input.mousePosition.x;
+					mouseYDown = Input.mousePosition.y;
+					point.transform.position = new Vector3( mouseXDown/Screen.width, mouseYDown/Screen.height, 0 );
+					point.pixelInset = new Rect( -Screen.height * drawScale/2, -Screen.height * drawScale/2, Screen.height * drawScale, Screen.height * drawScale );
+				}
 			}
 		}
 	}
