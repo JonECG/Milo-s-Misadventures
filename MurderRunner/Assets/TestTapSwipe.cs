@@ -9,7 +9,7 @@ public class TestTapSwipe : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Debug.Log( "Init!" );
-		this.gameObject.AddComponent<InitialSwipeAttack>();
+		this.gameObject.AddComponent<Thrust>();
 		
 		TapAndSlash ts = GetComponent<TapAndSlash>();
 		ts.Subscribe
@@ -18,6 +18,11 @@ public class TestTapSwipe : MonoBehaviour {
 			{
 				Debug.Log( "Woah: " + t1.calcWorldPoint().x + ", " + t1.calcWorldPoint().y + ", " + t1.calcWorldPoint().z );
 				Debug.Log( "Initial Tap" );
+
+				this.gameObject.GetComponent<Thrust>().attack (t1.calcWorldPoint(), this.gameObject.transform.position);
+
+
+
 				ts.Listen( 1,
 					(Touch t2) =>
 					{
@@ -36,24 +41,29 @@ public class TestTapSwipe : MonoBehaviour {
 			},
 			(Swipe s) =>
 			{
-				Vector2 start = new Vector2(s.beginX,s.beginY);
-				Vector2 end = new Vector2(s.endX,s.endY);
+//
+//Vector3 end = new Vector3(s.x,s.y, 1.0f);
+//
+////Debug.Log("End X: " + end.x + " , Y: " + end.y ); 
+// 
+//
+//
+//
+//Plane ground = new Plane( new Vector3( 0,1,0), new Vector3( 0,0,0 ) );
+//
+//Ray r = Camera.main.ScreenPointToRay(end);
+//float dist = 31.07353f;
+//bool hit = Physics.Raycast(r);
+//Debug.Log("HIT? : " + hit);
+//Debug.Log("Dist : " + dist); 
+//
+//Vector3 pos = r.origin + r.direction*dist;
+////Vector3 onMap = Camera.main.ScreenToWorldPoint(end);
+//
+//
+//Debug.Log("OnMap X: " + pos.x + " , Y : " + pos.y + " , Z: " + pos.z);
 
 
-
-				end = ((start-end)/ 2) + end;
-
-				Debug.Log("End X: " + end.x + " , Y: " + end.y ); 
-				 
-				
-
-				Ray r = Camera.main.ScreenPointToRay(end);
-
-
-				Vector3 onMap = r.GetPoint(Camera.main.gameObject.transform.position.y);
-
-
-				this.gameObject.GetComponent<InitialSwipeAttack>().attack (onMap, this.gameObject.transform.position);
 			}
 		);
 	}

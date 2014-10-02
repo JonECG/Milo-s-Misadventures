@@ -12,6 +12,11 @@ public class EnemyControler : MonoBehaviour {
 	void Start () {
 	
 	}
+
+	public static void dealDamage(Vector3 impact)
+	{
+		
+	}
 	
 	// Update is called once per frame
 	void Update () {
