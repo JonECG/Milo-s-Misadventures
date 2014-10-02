@@ -7,6 +7,12 @@ public class Touch
 	public float x;
 	public float y;
 	
+	public Touch()
+	{
+		x = 0;
+		y = 0;
+	}
+	
 	public Touch( float x, float y )
 	{
 		this.x = x;
@@ -30,7 +36,7 @@ public class Swipe : Touch
 	public float endY;
 	public float direction;
 	
-	public Swipe( float x1, float x2, float y1, float y2 ) : base( 0, 0 )
+	public Swipe( float x1, float y1, float x2, float y2 )
 	{
 		x = (x1 + x2) / 2;
 		y = (y1 + y2) / 2;
@@ -80,6 +86,14 @@ public class TapAndSlash : MonoBehaviour
 		nextTapAction = tapResponse;
 		nextSwipeAction = swipeResponse;
 		nextNoAction = noResponse;
+	}
+	
+	public void disable()
+	{
+	}
+	
+	public void enable()
+	{
 	}
 	
 	private GUITexture point, swipe;
