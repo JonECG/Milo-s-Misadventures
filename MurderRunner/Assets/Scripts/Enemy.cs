@@ -43,5 +43,6 @@ public class Enemy : MonoBehaviour {
 		var bloodEffect = (Instantiate (particleBlood, bloodPosition, bloodRotation) as GameObject);
 		Destroy (bloodEffect, 1.0f);
 		health -= damage;
+		KillCounterScript.Increment ();
 	}
 }

@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemyControler.cs" />
      <Compile Include="Assets\Scripts\KeyMovement.cs" />
+     <Compile Include="Assets\Scripts\KillCounterScript.cs" />
      <Compile Include="Assets\Scripts\MouseDragMovement.cs" />
      <Compile Include="Assets\Swing.cs" />
      <Compile Include="Assets\TapAndSlash.cs" />
