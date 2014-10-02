@@ -35,7 +35,10 @@ public class BigShockwave : AttackBase {
 		//		attackGameObject.SetActive (true);
 		timeRemaining = attackDuration;
 
-		attackGameObject.GetComponent<BoxCollider>().size = startingScale;
+		//attackGameObject.GetComponent<BoxCollider>().size = startingScale;
+		attackGameObject.renderer.transform.localScale = startingScale;
+		
+		
 
 
 		attackGameObject.renderer.material = (Resources.Load("BloodMaterial", typeof(Material)) as Material);
@@ -49,13 +52,16 @@ public class BigShockwave : AttackBase {
 		
 		attackGameObject.collider.transform.rotation = Quaternion.LookRotation(newDirection) ;
 		attackGameObject.collider.transform.position += (Vector3.Normalize (newDirection) * (Range / 2));
+		//attackGameObject.renderer.transform.rotation = Quaternion.LookRotation(newDirection) ;
+		//attackGameObject.renderer.transform.position += (Vector3.Normalize (newDirection) * (Range / 2));
 		//attackGameObject.collider.transform.Rotate (new Vector3 (0.0f, 1.0f, 0.0f), -90);
 		//attackGameObject.collider.transform.Translate (Vector3.Normalize (newDirection) * (Range / 2));
 		
 		
 		
 		attackGameObject.collider.enabled = true;
-		attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
+		attackGameObject.renderer.enabled = true;
+		//attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
 		
 		//attackGameObject.transform.position = pointOfOrigin;
 		
@@ -85,17 +91,22 @@ public class BigShockwave : AttackBase {
 		
 		attackGameObject = new GameObject ();
 		attackGameObject.AddComponent<MeshRenderer> ();
+		attackGameObject.AddComponent<MeshFilter> ();
+		attackGameObject.GetComponent<MeshFilter>().mesh = GameObject.Find( "CubeShuro" ).GetComponent<MeshFilter>().mesh;
 
 		startingScale = new Vector3 (Range, 1, 1);
+		
+		attackGameObject.GetComponent<MeshFilter>().transform.localScale = startingScale;
 
 
 		
 		attackGameObject.AddComponent<BoxCollider> ();
-		attackGameObject.GetComponent<BoxCollider>().size = startingScale;
+		//attackGameObject.GetComponent<BoxCollider>().size = startingScale;
 		Quaternion q = new Quaternion ();
 		attackGameObject.collider.transform.rotation = q;
 		
 		attackGameObject.collider.enabled = false;
+		attackGameObject.renderer.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -107,9 +118,11 @@ public class BigShockwave : AttackBase {
 			timeRemaining -= Time.deltaTime;
 			Vector3 direction = Vector3.Normalize(newDirection);
 			attackGameObject.collider.transform.position += direction*travelSpeed*Time.deltaTime;
-			attackGameObject.GetComponent<BoxCollider>().size = new Vector3( attackGameObject.GetComponent<BoxCollider>().size.x +Time.deltaTime*scaleRate, startingScale.y, startingScale.z);
+			//attackGameObject.GetComponent<BoxCollider>().size = new Vector3( attackGameObject.GetComponent<BoxCollider>().size.x +Time.deltaTime*scaleRate, startingScale.y, startingScale.z);
+			attackGameObject.renderer.transform.localScale = new Vector3( attackGameObject.renderer.transform.localScale.x +Time.deltaTime*scaleRate, startingScale.y, startingScale.z);
 		} else {
 			attackGameObject.collider.enabled = false;
+			attackGameObject.renderer.enabled = false;
 			
 			//attackGameObject.SetActive(false);
 			

@@ -35,7 +35,7 @@ public class Swing : AttackBase {
 		//		attackGameObject.SetActive (true);
 		timeRemaining = attackDuration;
 		
-		attackGameObject.GetComponent<BoxCollider>().size = startingScale;
+		//attackGameObject.GetComponent<BoxCollider>().size = startingScale;
 		
 		
 		attackGameObject.renderer.material = (Resources.Load("BloodMaterial", typeof(Material)) as Material);
@@ -51,6 +51,11 @@ public class Swing : AttackBase {
 		attackGameObject.collider.transform.position += (Vector3.Normalize (newDirection) * (Range / 2));
 		attackGameObject.collider.transform.Rotate (new Vector3 (0.0f, 1.0f, 0.0f), -90);
 		attackGameObject.collider.transform.Translate(new Vector3 (0.0f, 0.0f, 5.0f));
+		
+		//attackGameObject.renderer.transform.rotation = Quaternion.LookRotation(newDirection) ;
+		//attackGameObject.renderer.transform.position += (Vector3.Normalize (newDirection) * (Range / 2));
+		//attackGameObject.renderer.transform.Rotate (new Vector3 (0.0f, 1.0f, 0.0f), -90);
+		//attackGameObject.renderer.transform.Translate(new Vector3 (0.0f, 0.0f, 5.0f));
 
 		
 
@@ -59,6 +64,7 @@ public class Swing : AttackBase {
 		
 		
 		attackGameObject.collider.enabled = true;
+		attackGameObject.renderer.enabled = true;
 		attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
 		
 		//attackGameObject.transform.position = pointOfOrigin;
@@ -87,17 +93,21 @@ public class Swing : AttackBase {
 		
 		attackGameObject = new GameObject ();
 		attackGameObject.AddComponent<MeshRenderer> ();
+		attackGameObject.AddComponent<MeshFilter> ();
+		attackGameObject.GetComponent<MeshFilter>().mesh = GameObject.Find( "CubeShuro" ).GetComponent<MeshFilter>().mesh;
 		
 		startingScale = new Vector3 (Range, 1, width);
+		attackGameObject.renderer.transform.localScale = startingScale;
 		
 		
 		
 		attackGameObject.AddComponent<BoxCollider> ();
-		attackGameObject.GetComponent<BoxCollider>().size = startingScale;
+		//attackGameObject.GetComponent<BoxCollider>().size = startingScale;
 		Quaternion q = new Quaternion ();
 		attackGameObject.collider.transform.rotation = q;
 		
 		attackGameObject.collider.enabled = false;
+		attackGameObject.renderer.enabled = false;
 		attackGameObject.name = "Weapon";
 		
 	}
@@ -113,7 +123,7 @@ public class Swing : AttackBase {
 			timeRemaining -= Time.deltaTime;
 		} else {
 			attackGameObject.collider.enabled = false;
-			
+			attackGameObject.renderer.enabled = false;
 			//attackGameObject.SetActive(false);
 			
 		}

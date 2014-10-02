@@ -37,7 +37,7 @@ public class Thrust : AttackBase {
 		timeRemaining = attackDuration;
 		Material mat = (Resources.Load("New Material", typeof(Material)) as Material);
 		//attackGameObject.renderer.material = mat;
-		attackGameObject.GetComponent<MeshRenderer> ().material = mat;
+		//attackGameObject.GetComponent<MeshRenderer> ().material = mat;
 
 		attackGameObject.collider.transform.position = pointOfOrigin;
 		newDirection = direction - pointOfOrigin;
@@ -56,6 +56,7 @@ public class Thrust : AttackBase {
 
 
 		attackGameObject.collider.enabled = true;
+		attackGameObject.renderer.enabled = true;
 		//attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
 
 		//attackGameObject.transform.position = pointOfOrigin;
@@ -77,13 +78,15 @@ public class Thrust : AttackBase {
 
 		attackGameObject = new GameObject ();
 		attackGameObject.AddComponent<MeshRenderer> ();
+		attackGameObject.AddComponent<MeshFilter> ();
+		attackGameObject.GetComponent<MeshFilter>().mesh = GameObject.Find( "CubeShuro" ).GetComponent<MeshFilter>().mesh;
 		//attackGameObject.AddComponent<MeshFilter> ();
 		//GameObject g = (Resources.Load ("GiveMeFilter") as GameObject);
 		//MeshFilter workPlease = (g.GetComponent<MeshFilter>()); 
 		//attackGameObject.GetComponent<MeshFilter> ().mesh = workPlease.mesh;
 		
 		attackGameObject.AddComponent<BoxCollider> ();
-		attackGameObject.GetComponent<BoxCollider>().size = new Vector3 (Range, 1, 1);
+		//attackGameObject.GetComponent<BoxCollider>().size = new Vector3 (Range, 1, 1);
 		Quaternion q = new Quaternion ();
 
 		//attackGameObject.transform.localScale = attackGameObject.GetComponent<BoxCollider>().size ;
@@ -91,6 +94,8 @@ public class Thrust : AttackBase {
 		attackGameObject.collider.transform.rotation = q;
 
 		attackGameObject.collider.enabled = false;
+		attackGameObject.renderer.enabled = false;
+		
 
 		attackGameObject.name = "Weapon";
 
@@ -109,6 +114,7 @@ public class Thrust : AttackBase {
 						
 				} else {
 			attackGameObject.collider.enabled = false;
+			attackGameObject.renderer.enabled = false;
 			//attackGameObject.GetComponent<MeshFilter>().renderer.enabled = false;
 
 			//attackGameObject.SetActive(false);
