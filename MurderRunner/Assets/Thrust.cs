@@ -24,10 +24,21 @@ public class Thrust : AttackBase {
 	public float attackDuration;
 	private Vector3 newDirection;
 	private Vector3 PointOfO; 
+	private float travelSpeed;
+
 	public override void attack(Vector3 direction, Vector3 pointOfOrigin)
 	{
 //		attackGameObject.SetActive (true);
-		attackGameObject.renderer.material = (Resources.Load("BloodMaterial", typeof(Material)) as Material);
+		//attackGameObject.GetComponent<MeshFilter>().renderer.enabled = true;
+
+
+
+
+		timeRemaining = attackDuration;
+		Material mat = (Resources.Load("New Material", typeof(Material)) as Material);
+		//attackGameObject.renderer.material = mat;
+		attackGameObject.GetComponent<MeshRenderer> ().material = mat;
+
 		attackGameObject.collider.transform.position = pointOfOrigin;
 		newDirection = direction - pointOfOrigin;
 		//attackGameObject.collider.transform.rotation = Quaternion.FromToRotation (attackGameObject.collider.transform.forward, newDirection);
@@ -45,7 +56,7 @@ public class Thrust : AttackBase {
 
 
 		attackGameObject.collider.enabled = true;
-		attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
+		//attackGameObject.GetComponent<MeshRenderer> ().material.SetColor ("_Color", Color.red);
 
 		//attackGameObject.transform.position = pointOfOrigin;
 
@@ -61,18 +72,27 @@ public class Thrust : AttackBase {
 	void Start () {
 		Damage = 5.0f;
 		Range = 4.5f;
-		attackDuration = 1.0f;
-
+		attackDuration = 0.1f;
+		travelSpeed = 40.0f; 
 
 		attackGameObject = new GameObject ();
 		attackGameObject.AddComponent<MeshRenderer> ();
+		//attackGameObject.AddComponent<MeshFilter> ();
+		//GameObject g = (Resources.Load ("GiveMeFilter") as GameObject);
+		//MeshFilter workPlease = (g.GetComponent<MeshFilter>()); 
+		//attackGameObject.GetComponent<MeshFilter> ().mesh = workPlease.mesh;
 		
 		attackGameObject.AddComponent<BoxCollider> ();
 		attackGameObject.GetComponent<BoxCollider>().size = new Vector3 (Range, 1, 1);
 		Quaternion q = new Quaternion ();
+
+		//attackGameObject.transform.localScale = attackGameObject.GetComponent<BoxCollider>().size ;
+		
 		attackGameObject.collider.transform.rotation = q;
 
 		attackGameObject.collider.enabled = false;
+
+		attackGameObject.name = "Weapon";
 
 
 	}	
@@ -82,10 +102,15 @@ public class Thrust : AttackBase {
 		Debug.DrawLine (PointOfO, PointOfO+newDirection);
 		Debug.DrawLine( PointOfO+newDirection, PointOfO+newDirection+new Vector3( 0, 4, 0 ) );
 	
-		if (attackDuration > 0.0f) {
-						attackDuration -= Time.deltaTime;
+		if (timeRemaining > 0.0f) {
+			timeRemaining -= Time.deltaTime;
+						Vector3 direction = Vector3.Normalize(newDirection);
+			attackGameObject.collider.transform.position += direction*travelSpeed*Time.deltaTime;
+						
 				} else {
 			attackGameObject.collider.enabled = false;
+			//attackGameObject.GetComponent<MeshFilter>().renderer.enabled = false;
+
 			//attackGameObject.SetActive(false);
 
 				}

@@ -9,7 +9,8 @@ public class Enemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		this.player = (GameObject.Find ("CubeShuro") as GameObject);
+
 	}
 	
 	// Update is called once per frame
@@ -19,6 +20,15 @@ public class Enemy : MonoBehaviour {
 			Destroy(this.gameObject);
 		}
 	}
+
+	void OnTriggerEnter(Collider theCollision){
+		if (theCollision.gameObject.name=="Weapon") {
+						Hit (1);
+				}
+	
+
+	}
+
 
 	void moveTowardsPlayer(){
 		Vector3 moveDirection = new Vector3(this.transform.position.x - player.transform.position.x, this.transform.position.y - player.transform.position.y, this.transform.position.z - player.transform.position.z);

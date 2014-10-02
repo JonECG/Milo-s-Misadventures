@@ -10,8 +10,12 @@ public class TestTapSwipe : MonoBehaviour {
 	void Start () {
 		Debug.Log( "Init!" );
 		this.gameObject.AddComponent<Thrust>();
-		
+		this.gameObject.AddComponent<BigShockwave> ();
+		this.gameObject.AddComponent<Swing> ();
+
+
 		TapAndSlash ts = GetComponent<TapAndSlash>();
+
 		ts.Subscribe
 		( 	
 			(Touch t1) => 
@@ -31,6 +35,8 @@ public class TestTapSwipe : MonoBehaviour {
 					(Swipe s2) =>
 					{
 						Debug.Log( "Swipe after Initial Tap" );
+						this.gameObject.GetComponent<BigShockwave>().attack (s2.calcWorldPoint(), this.gameObject.transform.position);
+					
 					},
 					() =>
 					{
@@ -42,6 +48,12 @@ public class TestTapSwipe : MonoBehaviour {
 			(Swipe s) =>
 			{
 //
+				this.gameObject.GetComponent<Swing>().attack (s.calcWorldPoint(), this.gameObject.transform.position);
+				
+
+
+
+
 //Vector3 end = new Vector3(s.x,s.y, 1.0f);
 //
 ////Debug.Log("End X: " + end.x + " , Y: " + end.y ); 
