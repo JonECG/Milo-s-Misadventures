@@ -15,9 +15,6 @@ public class Enemy : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		moveTowardsPlayer ();
-		if (Input.GetKeyDown (KeyCode.A)) {
-			lightHit();
-		}
 		if (health <= 0) {
 			Destroy(this.gameObject);
 		}
@@ -28,13 +25,13 @@ public class Enemy : MonoBehaviour {
 		this.transform.position = this.transform.position - (moveDirection.normalized * (Time.deltaTime*2));
 	}
 
-	void lightHit(){
+	void Hit(int damage){
 		Vector3 vectorToPlayer = new Vector3(this.transform.position.x - player.transform.position.x, this.transform.position.y - player.transform.position.y, this.transform.position.z - player.transform.position.z);
 		Quaternion bloodRotation = new Quaternion();
 		bloodRotation.SetFromToRotation (new Vector3(0,0,1), vectorToPlayer); 
 		Vector3 bloodPosition = new Vector3 (this.transform.position.x, this.transform.position.y+0.5f, this.transform.position.z);
 		var bloodEffect = (Instantiate (particleBlood, bloodPosition, bloodRotation) as GameObject);
 		Destroy (bloodEffect, 1.0f);
-		health --;
+		health -= damage;
 	}
 }
