@@ -10,6 +10,8 @@ public class MouseDragMovement : MonoBehaviour {
 	private string playerName = "CubeShuro";
 
 	private bool playerWasClicked = false;
+
+	private bool MouseWasDown = false;
 	// Use this for initialization
 	void Start () {
 		is2DGame = Camera.main.gameObject.transform.rotation.eulerAngles.x <= 45;
@@ -21,37 +23,35 @@ public class MouseDragMovement : MonoBehaviour {
 		Ray test = Camera.main.ScreenPointToRay (Input.mousePosition);
 		bool mouseIsClicked = Input.GetMouseButton (0);
 		Vector3 mouseWorldPosition = test.origin; //Camera.main.ScreenToWorldPoint(Input.mousePosition);
+						
+		if (!MouseWasDown||playerWasClicked) {
+						if (mouseIsClicked) {
 
-
-		//Debug.Log ("test X: " + test.origin.x + " , Y: " + test.origin.y + " , Z: " + test.origin.z);
-		
-		//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
-		
-		if (mouseIsClicked) {
-
-						if (!playerWasClicked) {
-								resolveIfPlayerHit ();
-						}
-						else if (playerWasClicked) {
-								//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
+								if (!playerWasClicked) {
+										resolveIfPlayerHit ();
+								} else if (playerWasClicked) {
+										//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
 				
 
-								Vector3 newVelocity = (mouseWorldPosition-this.gameObject.transform.position); 
-								newVelocity.y = 0;
-								if (is2DGame) {
-										newVelocity.z = 0 ; 
-								}
+										Vector3 newVelocity = (mouseWorldPosition - this.gameObject.transform.position); 
+										newVelocity.y = 0;
+										if (is2DGame) {
+												newVelocity.z = 0; 
+										}
 						
-								//Debug.Log ("New Velocity X: " + newVelocity.x + " , Y: " + newVelocity.y + " , Z: " + newVelocity.z);
+										//Debug.Log ("New Velocity X: " + newVelocity.x + " , Y: " + newVelocity.y + " , Z: " + newVelocity.z);
 						
 								
 						
 						
-								this.gameObject.rigidbody.velocity = Vector3.Normalize (newVelocity) * speed;
+										this.gameObject.rigidbody.velocity = Vector3.Normalize (newVelocity) * speed;
+								}
+						} else if (playerWasClicked) {
+								playerWasClicked = false;
 						}
-				} else if(playerWasClicked){
-			playerWasClicked = false;
 				}
+		MouseWasDown = mouseIsClicked;
+		
 
 	}
 
