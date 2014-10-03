@@ -29,6 +29,7 @@ public class MouseDragMovement : MonoBehaviour {
 
 								if (!playerWasClicked) {
 										resolveIfPlayerHit ();
+										
 								} else if (playerWasClicked) {
 										//Debug.Log ("mouseWorldPositiony X: " + mouseWorldPosition.x + " , Y: " + mouseWorldPosition.y + " , Z: " + mouseWorldPosition.z);
 				
@@ -48,6 +49,8 @@ public class MouseDragMovement : MonoBehaviour {
 								}
 						} else if (playerWasClicked) {
 								playerWasClicked = false;
+								this.gameObject.GetComponent<TapAndSlash> ().enable ();
+				
 						}
 				}
 		MouseWasDown = mouseIsClicked;
@@ -74,6 +77,8 @@ public class MouseDragMovement : MonoBehaviour {
 		if(wasHit.name == playerName)
 		{
 			playerWasClicked = true;
+			this.gameObject.GetComponent<TapAndSlash> ().disable ();
+			
 		}
 
 
