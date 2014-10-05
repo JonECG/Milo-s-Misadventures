@@ -6,27 +6,27 @@ public class Enemy : MonoBehaviour {
 	public GameObject player;
 	public GameObject particleBlood;
 	private int health = 1;
+	public delegate void Killed();
+	public event Killed killed;
 
 	// Use this for initialization
 	void Start () {
 		this.player = (GameObject.Find ("CubeShuro") as GameObject);
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		moveTowardsPlayer ();
 		if (health <= 0) {
+			killed();
 			Destroy(this.gameObject);
 		}
 	}
 
 	void OnTriggerEnter(Collider theCollision){
 		if (theCollision.gameObject.name=="Weapon") {
-						Hit (1);
-				}
-	
-
+			Hit (1);
+		}
 	}
 
 
