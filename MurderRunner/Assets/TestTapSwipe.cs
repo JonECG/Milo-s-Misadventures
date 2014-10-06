@@ -6,6 +6,8 @@ using System;
 
 public class TestTapSwipe : MonoBehaviour {
 
+	private int health = 100;
+	
 	// Use this for initialization
 	void Start () {
 		Debug.Log( "Init!" );
@@ -80,8 +82,22 @@ public class TestTapSwipe : MonoBehaviour {
 		);
 	}
 	
+	void OnTriggerEnter(Collider theCollision){
+	Debug.Log( theCollision.name );
+		if (theCollision.gameObject.name=="EnemyWeapon") {
+			health -= 10;
+		}
+		
+		
+	}
+	
 	// Update is called once per frame
 	void Update () {
-	
+		transform.position = new Vector3( transform.position.x, 0, transform.position.z );
+		GameObject.Find("HealthText").guiText.text = "Health: " + health + " /100";
+		if( health <= 0 )
+		{
+			Application.LoadLevel(0);
+		}
 	}
 }

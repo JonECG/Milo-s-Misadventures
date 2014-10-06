@@ -5,21 +5,27 @@ public class Enemy : MonoBehaviour {
 
 	public GameObject player;
 	public GameObject particleBlood;
+	public float refreshTime = 3;
 	public GameObject bloodStainEffect;
 	private int health = 1;
+	
+	private float timeTilNextUpdate;
+	private Vector3 target;
 	public delegate void Killed();
 	public event Killed killed;
 
 	// Use this for initialization
 	void Start () {
+		this.gameObject.AddComponent<EnemyThrust>();
 		this.player = (GameObject.Find ("CubeShuro") as GameObject);
+		target = this.player.transform.position;
+		timeTilNextUpdate = refreshTime;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		moveTowardsPlayer ();
 		if (health <= 0) {
-			killed();
 			Destroy(this.gameObject);
 		}
 	}
@@ -32,8 +38,20 @@ public class Enemy : MonoBehaviour {
 
 
 	void moveTowardsPlayer(){
-		Vector3 moveDirection = new Vector3(this.transform.position.x - player.transform.position.x, this.transform.position.y - player.transform.position.y, this.transform.position.z - player.transform.position.z);
-		this.transform.position = this.transform.position - (moveDirection.normalized * (Time.deltaTime*2));
+		timeTilNextUpdate -= Time.deltaTime;
+		if( timeTilNextUpdate < 0 )
+		{
+			timeTilNextUpdate += refreshTime + Random.Range( 0, 1 );
+			target = this.player.transform.position;
+			
+			if( (target - this.transform.position).sqrMagnitude < 16 )
+			{
+				this.GetComponent<EnemyThrust>().attack(target, this.gameObject.transform.position);
+				target = this.transform.position;
+			}
+		}
+		Vector3 moveDirection = (target - transform.position);
+		this.transform.position = this.transform.position + (moveDirection.normalized * Mathf.Min( (Time.deltaTime*2), moveDirection.magnitude ) );
 	}
 
 	void Hit(int damage){
