@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour {
 
 	public GameObject player;
 	public GameObject particleBlood;
+	public GameObject bloodStainEffect;
 	private int health = 1;
 	public delegate void Killed();
 	public event Killed killed;
@@ -42,6 +43,8 @@ public class Enemy : MonoBehaviour {
 		Vector3 bloodPosition = new Vector3 (this.transform.position.x, this.transform.position.y+0.5f, this.transform.position.z);
 		var bloodEffect = (Instantiate (particleBlood, bloodPosition, bloodRotation) as GameObject);
 		Destroy (bloodEffect, 1.0f);
+		var bloodStain = (Instantiate (bloodStainEffect, this.transform.position, this.transform.rotation) as GameObject);
+		Destroy (bloodStain, 1.0f);
 		health -= damage;
 		KillCounterScript.Increment ();
 	}
