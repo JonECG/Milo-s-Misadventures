@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PlayerController.cs">
+    <Files>
+      <File FileName="Assets\FollowCam.cs" Line="15" Column="37" />
+      <File FileName="Assets\PlayerController.cs" Line="113" Column="24" />
+      <File FileName="Assets\EnergyController.cs" Line="1" Column="1" />
+      <File FileName="Assets\TapAndSlash.cs" Line="1" Column="1" />
+      <File FileName="Assets\LevelController.cs" Line="9" Column="49" />
+      <File FileName="Assets\TapAndSlashDraw.cs" Line="1" Column="1" />
+      <File FileName="Assets\TutorialView.cs" Line="77" Column="28" />
+      <File FileName="Assets\SpikeController.cs" Line="1" Column="1" />
+      <File FileName="Assets\ShatterBox.cs" Line="8" Column="3" />
+      <File FileName="Assets\CheckpointController.cs" Line="8" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
