@@ -54,7 +54,7 @@ public class TutorialView : MonoBehaviour {
 		this.start = start;
 		this.end = end;
 		
-		time = 0;
+		time = -1;
 		repeat = true;
 		visible = true;
 		this.message = message;
@@ -70,11 +70,12 @@ public class TutorialView : MonoBehaviour {
 	{
 		var centeredStyle = new GUIStyle( GUI.skin.label );
 		centeredStyle.alignment = TextAnchor.UpperCenter;
+		centeredStyle.fontSize = 32;
 		
 		
 		if( visible )
 		{
-			GUI.Label ( new Rect (20, 20, Screen.width/2, 200), message, centeredStyle);
+			GUI.Label ( new Rect (20, 20, 3*Screen.width/4, 200), message, centeredStyle);
 			TapAndSlashDraw draw = GetComponent<TapAndSlashDraw>();
 			
 			float animationProgress = time / animationDuration*2;

@@ -10,6 +10,14 @@ public class PlayerController : MonoBehaviour {
 	EnergyController lastEnergy;
 	float lastEnergyTime;
 	public float mercyTime = 0.2f;
+	
+	float hSpeedLastTouch;
+	float vSpeedLastTouch;
+	
+	Vector3 actualPosition;
+	float timeInTween;
+	public float compensateTweenTime = 1;
+	
 	private static bool hasCheck = false;
 	private static Vector3 startPosition;
 	
@@ -25,6 +33,7 @@ public class PlayerController : MonoBehaviour {
 		else
 		{
 			transform.position = new Vector3( startPosition.x, startPosition.y, startPosition.z );
+			actualPosition = transform.position;
 		}
 		
 		vSpeed = 0;
@@ -51,13 +60,15 @@ public class PlayerController : MonoBehaviour {
 		{
 			EnergyController energ = ((GameObject)en[i]).GetComponent<EnergyController>();
 			
-			if( !energ.touched )
+			if( energ.gameObject.activeSelf )
 			{
 				float dist = (transform.position - energ.transform.position).sqrMagnitude;
-				if( dist > energ.lastDistance && dist < 1 )
+				if( dist > energ.lastDistance && dist < 0.5 )
 				{
 					lastEnergyTime = Time.time;
 					lastEnergy = energ;
+					vSpeedLastTouch = vSpeed;
+					hSpeedLastTouch = hSpeed;
 					energ.touched = true;
 					touchEnergy( ((GameObject)en[i]) );
 				}
@@ -107,11 +118,15 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 				
-		if( (tutWait || Time.time - lastEnergyTime < mercyTime) && Time.time - lastSwipeTime < mercyTime*2 )
+		if( ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
 		{
 			lastEnergyTime = -50;
 			lastSwipeTime = -50;
 			tutWait = false;
+			timeInTween = 0;
+			actualPosition = lastEnergy.transform.position;
+			hSpeed = hSpeedLastTouch;
+			vSpeed = vSpeedLastTouch;
 			transform.FindChild("particle").GetComponent<ParticleSystem>().Play();
 			GetComponent<TutorialView>().unshow();
 			
@@ -147,7 +162,16 @@ public class PlayerController : MonoBehaviour {
 		
 		if( !tutWait )
 		{
-			transform.position = transform.position + new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
+			Vector3 off = new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
+			transform.position = transform.position + off;
+			actualPosition += off;
+			
+			if( timeInTween < compensateTweenTime )
+			{
+				transform.position = transform.position + (actualPosition-transform.position) * timeInTween/compensateTweenTime;
+				timeInTween += Time.deltaTime;
+			}
+			
 			if( inAir && hSpeed < 2.5 )
 			{
 				vSpeed -= 9*Time.deltaTime;
@@ -164,6 +188,7 @@ public class PlayerController : MonoBehaviour {
 				vSpeed = 0;
 				inAir = false;
 				transform.position = new Vector3( transform.position.x, 1.5f, transform.position.z );
+				actualPosition = new Vector3( actualPosition.x, 1.5f, actualPosition.z );
 			}
 		}
 	}
