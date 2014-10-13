@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour {
 	void Update () {
 		moveTowardsPlayer ();
 		if (health <= 0) {
+			killed();
 			Destroy(this.gameObject);
 		}
 	}

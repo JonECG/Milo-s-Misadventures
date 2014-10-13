@@ -93,7 +93,7 @@ public class TestTapSwipe : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.position = new Vector3( transform.position.x, 0, transform.position.z );
+		transform.position = new Vector3( transform.position.x, 1, transform.position.z );
 		GameObject.Find("HealthText").guiText.text = "Health: " + health + " /100";
 		if( health <= 0 )
 		{
