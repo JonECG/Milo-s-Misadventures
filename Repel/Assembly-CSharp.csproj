@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BounceWithTime.cs" />
      <Compile Include="Assets\CheckpointController.cs" />
      <Compile Include="Assets\EnergyController.cs" />
      <Compile Include="Assets\FollowCam.cs" />
