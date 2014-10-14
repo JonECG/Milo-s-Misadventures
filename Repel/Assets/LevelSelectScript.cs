@@ -22,31 +22,32 @@ public class LevelSelectScript : MonoBehaviour {
 		buttonHeight = Screen.height/numRows;
 	}
 
-	bool customButton (int row, int column, string text)
+	bool customButton (float row, float column, string text)
 	{
 		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row, buttonWidth, buttonHeight), text);
 	}
 
 	void OnGUI() 
 	{
-		if (GUI.Button (new Rect (10, 10, buttonWidth/2, buttonHeight), "Back"))
+		PlayerController.hasCheck = false;
+		//if (GUI.Button (new Rect (10, 10, buttonWidth/2, buttonHeight), "Back"))
 		{
 			//Go to the main menu
 		}
 
-		if (customButton (1,1,"Tutorial"))
+		if (customButton ( 3, 1.5f,"Tutorial"))
 		{
-			
+			Application.LoadLevel( 1 );
 		}
 
-		if (customButton (2, 1, "JumpNDash")) 
+		if (customButton ( 4.5f, 1.5f, "New Heights")) 
 		{
-
+			Application.LoadLevel( 2 );
 		}
 
-		if (customButton (1,2,"Advanced"))
+		if (customButton ( 6, 1.5f, "Closed Spaces"))
 		{
-			
+			Application.LoadLevel( 3 );
 		}
 	}
 }

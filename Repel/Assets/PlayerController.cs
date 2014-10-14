@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 	float timeInTween;
 	public float compensateTweenTime = 1;
 	
-	private static bool hasCheck = false;
+	public static bool hasCheck = false;
 	private static Vector3 startPosition;
 	
 	float hSpeed;
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour {
 			float dist = (transform.position - ((GameObject)spikes[i]).transform.position).sqrMagnitude;
 			if( dist < 2 )
 			{
-				Application.LoadLevel(0);
+				Application.LoadLevel( Application.loadedLevel );
 			}
 		}
 		
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				if( hSpeed < 1.1 )
 				{
-					Application.LoadLevel(0);
+					Application.LoadLevel( Application.loadedLevel );
 				}
 				else
 				{
@@ -112,9 +112,16 @@ public class PlayerController : MonoBehaviour {
 			float dist = (transform.position - ((GameObject)checkpoints[i]).transform.position).sqrMagnitude;
 			if( dist < 6 )
 			{
-				((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );
-				startPosition = new Vector3( transform.position.x, 1.5f, 0 );
-				hasCheck = true;
+				if( ((GameObject)checkpoints[i]).GetComponent<CheckpointController>().goal )
+				{
+					Application.LoadLevel( 0 );
+				}
+				else
+				{
+					((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );
+					startPosition = new Vector3( transform.position.x, 1.5f, 0 );
+					hasCheck = true;
+				}
 			}
 		}
 				
