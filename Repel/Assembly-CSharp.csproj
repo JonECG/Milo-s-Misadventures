@@ -54,6 +54,7 @@
      <Compile Include="Assets\LevelSelectScript.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\ShatterBox.cs" />
+     <Compile Include="Assets\SlopeScript.cs" />
      <Compile Include="Assets\SpikeController.cs" />
      <Compile Include="Assets\TapAndSlash.cs" />
      <Compile Include="Assets\TapAndSlashDraw.cs" />

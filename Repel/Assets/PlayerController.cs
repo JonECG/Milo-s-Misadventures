@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 	bool inAir;
 	// Use this for initialization
 	void Start () {
+		timeInTween = compensateTweenTime;
 		if ( !hasCheck )
 		{
 			startPosition = new Vector3( transform.position.x, transform.position.y, transform.position.z );
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 		
 		vSpeed = 0;
 		hSpeed = 1;
-		inAir = false;
+		inAir = true;
 		lastSwipeTime = -50;
 		lastEnergyTime = -50;
 		tutWait = false;
@@ -53,8 +54,89 @@ public class PlayerController : MonoBehaviour {
 		Debug.Log( s.direction );
 	}
 	
+	bool cubeCollision( GameObject a, GameObject b )
+	{
+		//if( this->type == Shapes::CUBE && other->type == Shapes::CUBE )
+		{
+			float amnt;
+			float mostInter;
+			float closestRat;
+			//glm::vec3 norm;
+			
+			//check the X axis
+			amnt = Mathf.Abs( a.transform.position.x - b.transform.position.x ) / (a.collider.bounds.extents.x + b.collider.bounds.extents.x);
+			if( amnt < 1 )
+			{
+				closestRat = amnt;
+				//mostInter = (this->bounds.x + other->bounds.x) - closestRat * (this->bounds.x + other->bounds.x);
+				//norm = glm::vec3( ( thisTrans->getTranslation().x > otherTrans->getTranslation().x ) ? 1 : -1, 0, 0 );
+				//check the Y axis
+				amnt = Mathf.Abs( a.transform.position.y - b.transform.position.y ) / (a.collider.bounds.extents.y + b.collider.bounds.extents.y);
+				if( amnt < 1 )
+				{
+					if( amnt > closestRat )
+					{
+						closestRat = amnt;
+						//mostInter = (this->bounds.y + other->bounds.y) - closestRat * (this->bounds.y + other->bounds.y);
+						//norm = glm::vec3( 0, ( thisTrans->getTranslation().y > otherTrans->getTranslation().y ) ? 1 : -1, 0 );
+					}
+					//check the Z axis
+					amnt = Mathf.Abs( a.transform.position.z - b.transform.position.z ) / (a.collider.bounds.extents.z + b.collider.bounds.extents.z);
+					if( amnt < 1 )
+					{
+						if( amnt > closestRat )
+						{
+							closestRat = amnt;
+							//mostInter = (this->bounds.z + other->bounds.z) - closestRat * (this->bounds.z + other->bounds.z);
+							//norm = glm::vec3( 0, 0, ( thisTrans->getTranslation().z > otherTrans->getTranslation().z ) ? 1 : -1 );
+						}
+						
+						//(*interpenetration) = mostInter + EPSILON;
+						//(*collisionNormal) = norm;
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	// Update is called once per frame
 	void Update () {
+		bool hadTouched = !inAir;
+		inAir = true;
+		ArrayList slopes = GameObject.Find( "LevelController" ).GetComponent<LevelController>().slopes;
+		for( int i = 0; i < slopes.Count; i++ )
+		{
+			SlopeScript slop = ((GameObject)slopes[i]).GetComponent<SlopeScript>();
+			
+			if( cubeCollision( gameObject, slop.gameObject ) )
+			{
+				if( slop.isInRange( transform.position.x ) )
+				{
+					float ny = slop.getY( transform.position.x ) + 1.0f;
+					
+					if( ny > transform.position.y || ( hadTouched && Mathf.Abs( ny - transform.position.y ) < 1 ) )
+					{
+						if( ny > transform.position.y + 2 )
+						{
+							Application.LoadLevel( Application.loadedLevel );
+						}
+						else
+						{
+							transform.position = new Vector3( transform.position.x, ny, transform.position.z );
+							actualPosition = transform.position;
+							inAir = false;
+							vSpeed = 0;
+						}
+					}
+				}
+			}
+		}
+	
+	
+	
 		ArrayList en = GameObject.Find( "LevelController" ).GetComponent<LevelController>().energies;
 		for( int i = 0; i < en.Count; i++ )
 		{
@@ -190,12 +272,9 @@ public class PlayerController : MonoBehaviour {
 			}
 			if( hSpeed > 1 )
 				hSpeed -= Mathf.Min( hSpeed - 1, 1.8f*Time.deltaTime );
-			if (transform.position.y < 1.5 )
+			if (transform.position.y < -10 )
 			{
-				vSpeed = 0;
-				inAir = false;
-				transform.position = new Vector3( transform.position.x, 1.5f, transform.position.z );
-				actualPosition = new Vector3( actualPosition.x, 1.5f, actualPosition.z );
+				Application.LoadLevel( Application.loadedLevel );
 			}
 		}
 	}
