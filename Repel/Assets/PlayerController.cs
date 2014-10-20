@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 	EnergyController lastEnergy;
 	float lastEnergyTime;
 	public float mercyTime = 0.2f;
-	
+	public GameObject checkPointEffect;
 	float hSpeedLastTouch;
 	float vSpeedLastTouch;
 	
@@ -193,7 +193,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
-		
+
 		ArrayList checkpoints = GameObject.Find( "LevelController" ).GetComponent<LevelController>().checkpoints;
 		for( int i = 0; i < checkpoints.Count; i++ )
 		{
@@ -206,6 +206,8 @@ public class PlayerController : MonoBehaviour {
 				}
 				else
 				{
+					var partEfIn = (Instantiate(checkPointEffect,((GameObject)checkpoints[i]).transform.position,Quaternion.identity) as GameObject);
+					Destroy(partEfIn,1.0f);
 					((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );
 					startPosition = new Vector3( transform.position.x, 1.5f, 0 );
 					hasCheck = true;
