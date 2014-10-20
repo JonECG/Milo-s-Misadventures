@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour {
 	float timeInTween;
 	public float compensateTweenTime = 1;
 	
+	public float airTime;
+	
 	public static bool hasCheck = false;
 	private static Vector3 startPosition;
 	
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour {
 		
 		vSpeed = 0;
 		hSpeed = 1;
+		airTime = 0;
 		inAir = true;
 		lastSwipeTime = -50;
 		lastEnergyTime = -50;
@@ -105,7 +108,9 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		bool hadTouched = !inAir;
-		inAir = true;
+		if( !tutWait )
+			inAir = true;
+			
 		ArrayList slopes = GameObject.Find( "LevelController" ).GetComponent<LevelController>().slopes;
 		for( int i = 0; i < slopes.Count; i++ )
 		{
@@ -117,7 +122,7 @@ public class PlayerController : MonoBehaviour {
 				{
 					float ny = slop.getY( transform.position.x ) + 1.0f;
 					
-					if( ny > transform.position.y || ( hadTouched && Mathf.Abs( ny - transform.position.y ) < 1 ) )
+					if( ny > transform.position.y || ( airTime < 0.5 && vSpeed < 0 && Mathf.Abs( ny - transform.position.y ) < 1 ) )
 					{
 						if( ny > transform.position.y + 2 )
 						{
@@ -128,6 +133,7 @@ public class PlayerController : MonoBehaviour {
 							transform.position = new Vector3( transform.position.x, ny, transform.position.z );
 							actualPosition = transform.position;
 							inAir = false;
+							airTime = 0;
 							vSpeed = 0;
 						}
 					}
@@ -226,7 +232,7 @@ public class PlayerController : MonoBehaviour {
 					inAir = true;
 					break;
 				case Direction.DOWN:
-					if( inAir )
+					if( airTime > 0.5 )
 					{
 						vSpeed = -15;
 						hSpeed = 1;
@@ -234,6 +240,7 @@ public class PlayerController : MonoBehaviour {
 					else
 					{
 						inAir = true;
+						airTime = 20;
 						hSpeed = 0.25f;
 						vSpeed = 14;
 					}
@@ -251,6 +258,7 @@ public class PlayerController : MonoBehaviour {
 		
 		if( !tutWait )
 		{
+			airTime+=Time.deltaTime;
 			Vector3 off = new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
 			transform.position = transform.position + off;
 			actualPosition += off;
