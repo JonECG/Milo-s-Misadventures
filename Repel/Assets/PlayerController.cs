@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour {
 					var partEfIn = (Instantiate(checkPointEffect,((GameObject)checkpoints[i]).transform.position,Quaternion.identity) as GameObject);
 					Destroy(partEfIn,1.0f);
 					((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );
-					startPosition = new Vector3( transform.position.x, 1.5f, 0 );
+					startPosition = new Vector3( transform.position.x, transform.position.y, 0 );
 					hasCheck = true;
 				}
 			}

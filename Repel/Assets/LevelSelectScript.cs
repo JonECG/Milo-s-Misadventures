@@ -35,17 +35,27 @@ public class LevelSelectScript : MonoBehaviour {
 			//Go to the main menu
 		}
 
-		if (customButton ( 3, 1.5f,"Tutorial"))
+		if (customButton ( 3, 1.5f,"1) Up and up"))
+		{
+			Application.LoadLevel( 1 );
+		}
+		
+		if (customButton ( 3, 1.5f,"2) Dashing along"))
 		{
 			Application.LoadLevel( 1 );
 		}
 
-		if (customButton ( 4.5f, 1.5f, "New Heights")) 
+		if (customButton ( 4.5f, 1.5f, "3) New Heights")) 
+		{
+			Application.LoadLevel( 2 );
+		}
+		
+		if (customButton ( 4.5f, 1.5f, "4) Hold it!")) 
 		{
 			Application.LoadLevel( 2 );
 		}
 
-		if (customButton ( 6, 1.5f, "Closed Spaces"))
+		if (customButton ( 6, 1.5f, "5) Closed Spaces"))
 		{
 			Application.LoadLevel( 3 );
 		}
