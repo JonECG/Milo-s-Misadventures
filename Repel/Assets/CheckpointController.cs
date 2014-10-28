@@ -4,6 +4,7 @@ using System.Collections;
 public class CheckpointController : MonoBehaviour {
 
 	public bool goal = false;
+	public bool triggered = false;
 	
 	// Use this for initialization
 	void Start () {

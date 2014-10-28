@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 	Vector3 actualPosition;
 	float timeInTween;
 	public float compensateTweenTime = 1;
+	private bool startGame;
 	
 	public float airTime;
 	
@@ -39,22 +40,38 @@ public class PlayerController : MonoBehaviour {
 			actualPosition = transform.position;
 		}
 		
+		startGame = true;
 		vSpeed = 0;
 		hSpeed = 1;
 		airTime = 0;
 		inAir = true;
 		lastSwipeTime = -50;
 		lastEnergyTime = -50;
-		tutWait = false;
-		GetComponent<TapAndSlash>().Subscribe( null, swipeResponse );
+		tutWait = true;
+		GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
+		GetComponent<TapAndSlash>().Subscribe( tapResponse, swipeResponse );
+	}
+	
+	void tapResponse( Touch t )
+	{
+		if( startGame && tutWait )
+		{
+			Debug.Log( "Touched" );
+			tutWait = false;
+			startGame = false;
+			GetComponent<TutorialView>().unshow();
+		}
 	}
 	
 	void swipeResponse( Swipe s )
 	{
-		Debug.Log( "Swiped" );
-		lastSwipe = s;
-		lastSwipeTime = Time.time;
-		Debug.Log( s.direction );
+		if( !startGame )
+		{
+			Debug.Log( "Swiped" );
+			lastSwipe = s;
+			lastSwipeTime = Time.time;
+			Debug.Log( s.direction );
+		}
 	}
 	
 	bool cubeCollision( GameObject a, GameObject b )
@@ -206,8 +223,15 @@ public class PlayerController : MonoBehaviour {
 				}
 				else
 				{
-					var partEfIn = (Instantiate(checkPointEffect,((GameObject)checkpoints[i]).transform.position,Quaternion.identity) as GameObject);
-					Destroy(partEfIn,1.0f);
+					if( !((GameObject)checkpoints[i]).GetComponent<CheckpointController>().triggered )
+					{
+						((GameObject)checkpoints[i]).GetComponent<CheckpointController>().triggered = true;
+						if( !startGame )
+						{
+							var partEfIn = (Instantiate(checkPointEffect,((GameObject)checkpoints[i]).transform.position,Quaternion.identity) as GameObject);
+							Destroy(partEfIn,1.0f);
+						}
+					}
 					((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );
 					startPosition = new Vector3( transform.position.x, transform.position.y, 0 );
 					hasCheck = true;
@@ -217,15 +241,16 @@ public class PlayerController : MonoBehaviour {
 				
 		if( ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
 		{
+			tutWait = false;
+			GetComponent<TutorialView>().unshow();
+			
 			lastEnergyTime = -50;
 			lastSwipeTime = -50;
-			tutWait = false;
 			timeInTween = 0;
 			actualPosition = lastEnergy.transform.position;
 			hSpeed = hSpeedLastTouch;
 			vSpeed = vSpeedLastTouch;
 			transform.FindChild("particle").GetComponent<ParticleSystem>().Play();
-			GetComponent<TutorialView>().unshow();
 			
 			switch( lastSwipe.direction )
 			{

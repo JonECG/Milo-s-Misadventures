@@ -12,6 +12,8 @@ public class FollowCam : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		this.transform.position = target.transform.position + targetOffset + cameraOffset;
+		this.transform.rotation = Quaternion.LookRotation( lastTo-transform.position );
 		lastTo = target.transform.position + targetOffset;
 	}
 	

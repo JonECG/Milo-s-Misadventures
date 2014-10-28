@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class TutorialView : MonoBehaviour {
@@ -7,19 +7,26 @@ public class TutorialView : MonoBehaviour {
 	public float animationDuration = 3;
 	public float handDistance = 0.1f;
 	private float time;
-	private bool repeat;
+	private bool repeat = false;
 	private bool visible;
 	private string message = "";
+	
+	private float shadeAmount = 0;
+	private float maxShadeAmount = 0.5f;
 	
 	private Vector2 start, end;
 	
 	// Use this for initialization
 	void Start () {
-		repeat = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.Log( repeat );
+		float target = (repeat) ? 1 : 0;
+		float tweenDisp = 10;
+		shadeAmount = ( shadeAmount * tweenDisp + target ) / ( tweenDisp + 1 );
+		
 		time += Time.deltaTime;
 		if( time > animationDuration )
 		{
@@ -65,13 +72,37 @@ public class TutorialView : MonoBehaviour {
 		repeat = false;
 	}
 	
+	private static Texture2D _staticRectTexture;
+	private static GUIStyle _staticRectStyle;
+	
+	// Note that this function is only meant to be called from OnGUI() functions.
+	public static void GUIDrawRect( Rect position, Color color )
+	{
+		if( _staticRectTexture == null )
+		{
+			_staticRectTexture = new Texture2D( 1, 1 );
+		}
+		
+		if( _staticRectStyle == null )
+		{
+			_staticRectStyle = new GUIStyle();
+		}
+		
+		_staticRectTexture.SetPixel( 0, 0, color );
+		_staticRectTexture.Apply();
+		
+		_staticRectStyle.normal.background = _staticRectTexture;
+		
+		GUI.Box( position, GUIContent.none, _staticRectStyle );		
+	}
+	
 	int lastPhase = 0;
 	void OnGUI()
 	{
 		var centeredStyle = new GUIStyle( GUI.skin.label );
 		centeredStyle.alignment = TextAnchor.UpperCenter;
 		centeredStyle.fontSize = 32;
-		
+		GUIDrawRect( new Rect(0,0,Screen.width,Screen.height), new Color( 0,0,0, shadeAmount * maxShadeAmount ) );
 		
 		if( visible )
 		{
