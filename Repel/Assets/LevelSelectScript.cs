@@ -22,6 +22,12 @@ public class LevelSelectScript : MonoBehaviour {
 		buttonHeight = Screen.height/numRows;
 	}
 
+	bool checkButton(int num, string text)
+	{
+		return customButton (1.5f * num, 1.5f, ""+num+") "+text);
+	}
+
+
 	bool customButton (float row, float column, string text)
 	{
 		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row, buttonWidth, buttonHeight), text);
@@ -35,29 +41,37 @@ public class LevelSelectScript : MonoBehaviour {
 			//Go to the main menu
 		}
 
-		if (customButton ( 1.5f, 1.5f,"1) Up and up"))
+		if (checkButton(2,"Up and up"))
 		{
-			Application.LoadLevel( 1 );
-		}
-		
-		if (customButton ( 3.0f, 1.5f,"2) Dashing along"))
-		{
-			Application.LoadLevel( 2 );
+			Application.LoadLevel( "JumpAndDownPractice_1" );
 		}
 
-		if (customButton ( 4.5f, 1.5f, "3) New Heights")) 
-		{
-			Application.LoadLevel( 3 );
-		}
 		
-		if (customButton ( 6.0f, 1.5f, "4) Hold it!")) 
+		if (checkButton (3,"Dashing along"))
 		{
-			Application.LoadLevel( 4 );
+			Application.LoadLevel( "TalansLevel" );
 		}
 
-		if (customButton ( 7.5f, 1.5f, "5) Closed Spaces"))
+		if (checkButton(4, "New Heights")) 
 		{
-			Application.LoadLevel( 5 );
+			Application.LoadLevel( "UpTutorial" );
 		}
+
+		if (checkButton (1, "Hold it!")) 
+		{
+			Application.LoadLevel( "testScene" );
+		}
+
+		if (checkButton (5, "Closed Spaces"))
+		{
+			Application.LoadLevel( "AJLevel" );
+		}
+
+
+
+
+
+
+
 	}
 }
