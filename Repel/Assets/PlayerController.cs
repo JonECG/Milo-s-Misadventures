@@ -449,4 +449,12 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 	}
+
+    void OnGUI()
+    {
+        if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), "Reset"))
+        {
+            loadLevel();
+        }
+    }
 }
