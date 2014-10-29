@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
 	float lastEnergyTime;
 	public float mercyTime = 0.2f;
 	public GameObject checkPointEffect;
+	public AudioClip hitCheckpointSound;
 	float hSpeedLastTouch;
 	float vSpeedLastTouch;
 	
@@ -197,6 +198,7 @@ public class PlayerController : MonoBehaviour {
 			float dist = (transform.position - ((GameObject)spikes[i]).transform.position).sqrMagnitude;
 			if( dist < 2 )
 			{
+			
 				Application.LoadLevel( Application.loadedLevel );
 			}
 		}
@@ -260,6 +262,7 @@ public class PlayerController : MonoBehaviour {
 						{
 							var partEfIn = (Instantiate(checkPointEffect,((GameObject)checkpoints[i]).transform.position,Quaternion.identity) as GameObject);
 							Destroy(partEfIn,1.0f);
+							audio.PlayOneShot(hitCheckpointSound,0.55f);
 						}
 					}
 					((GameObject)checkpoints[i]).renderer.material.color = new Color( 0.5f, 1, 0 );

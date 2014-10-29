@@ -1,8 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="C:\Users\Jon\Documents\OVRtest\Assets\OVR\Scripts\OVRTracker.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PlayerController.cs">
     <Files>
-      <File FileName="C:\Users\Jon\Documents\OVRtest\Assets\OVR\Scripts\OVRTracker.cs" Line="137" Column="35" />
+      <File FileName="Assets\CheckpointController.cs" Line="17" Column="3" />
+      <File FileName="Assets\PlayerController.cs" Line="235" Column="49" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
