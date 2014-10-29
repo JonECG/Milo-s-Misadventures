@@ -125,6 +125,11 @@ public class PlayerController : MonoBehaviour {
 		
 		return false;
 	}
+
+    public void loadLevel()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
 	
 	// Update is called once per frame
 	void Update () {
