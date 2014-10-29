@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour {
 	float hSpeed;
 	float vSpeed;
 	bool inAir;
+	bool aboveFan;
+	bool belowFan;
 	// Use this for initialization
 	void Start () {
 		timeInTween = compensateTweenTime;
@@ -48,6 +50,8 @@ public class PlayerController : MonoBehaviour {
 		lastSwipeTime = -50;
 		lastEnergyTime = -50;
 		tutWait = true;
+		aboveFan = false;
+		belowFan = false;
 		GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
 		GetComponent<TapAndSlash>().Subscribe( tapResponse, swipeResponse );
 	}
@@ -191,6 +195,27 @@ public class PlayerController : MonoBehaviour {
 				Application.LoadLevel( Application.loadedLevel );
 			}
 		}
+
+		aboveFan = false;
+		belowFan = false;
+		ArrayList fans = GameObject.Find( "LevelController" ).GetComponent<LevelController>().fans;
+		for( int i = 0; i < fans.Count; i++ )
+		{
+			if (transform.position.x > ((GameObject)fans[i]).transform.position.x-2)
+			{
+				if (transform.position.x < ((GameObject)fans[i]).transform.position.x+2)
+				{
+					if (transform.position.y >= ((GameObject)fans[i]).transform.position.y)
+					{
+						aboveFan = true;
+					}
+					else
+					{
+						belowFan = true;
+					}
+				}
+			}
+		}
 		
 		ArrayList shatters = GameObject.Find( "LevelController" ).GetComponent<LevelController>().shatters;
 		for( int i = 0; i < shatters.Count; i++ )
@@ -255,29 +280,116 @@ public class PlayerController : MonoBehaviour {
 			switch( lastSwipe.direction )
 			{
 				case Direction.UP:
-					vSpeed = 10;
-					inAir = true;
-					break;
-				case Direction.DOWN:
-					if( airTime > 0.5 )
+					if (aboveFan && belowFan)
 					{
-						vSpeed = -15;
-						hSpeed = 1;
+						vSpeed = 10;
+					}
+					else
+					if (aboveFan)
+					{
+						vSpeed = 15;
+					}
+					else
+					if (belowFan)
+					{
+						vSpeed = 6;
 					}
 					else
 					{
+						vSpeed = 10;
+					}
+					inAir = true;
+					break;
+				case Direction.DOWN:
+					if( airTime > 0.5)
+					{
+						if (!inAir)
+						{
+							if (aboveFan && belowFan)
+							{
+								vSpeed = 14;
+							}
+							else
+								if (aboveFan)
+							{
+								vSpeed = 20;
+							}
+							else
+								if (belowFan)
+							{
+								vSpeed = 10;
+							}
+							else
+							{
+								vSpeed = 14;
+							}
+							hSpeed = 1;
+						}
+						else
+						{
+							if (aboveFan && belowFan || inAir)
+							{
+								vSpeed = -15;
+							}
+							else
+								if (aboveFan)
+							{
+								vSpeed = -10;
+							}
+							else
+								if (belowFan)
+							{
+								vSpeed = -20;
+							}
+							else
+							{
+								vSpeed = -15;
+							}
+						}
+					}
+					else
+					{
+						
+						if (aboveFan)
+						{
+							vSpeed = 20;
+						}
+						else
+							if (belowFan)
+						{
+							vSpeed = 10;
+						}
+						else
+						{
+							vSpeed = 14;
+						}
+						hSpeed = 1;
 						inAir = true;
 						airTime = 20;
 						hSpeed = 0.25f;
-						vSpeed = 14;
+						
+						
 					}
 					break;
 				case Direction.LEFT:
 					hSpeed = 0;
 					break;
 				case Direction.RIGHT:
+					
 					hSpeed = 3;
-					vSpeed = 0;
+					if (aboveFan)
+					{
+						vSpeed = 2;
+					}
+					else
+					if (belowFan)
+					{
+						vSpeed = -2;
+					}
+					else
+					{
+						vSpeed = 0;
+					}
 					break;
 			}
 			lastEnergy.gameObject.SetActive( false );

@@ -8,6 +8,7 @@ public class LevelController : MonoBehaviour {
 	public ArrayList shatters = new ArrayList();
 	public ArrayList checkpoints = new ArrayList();
 	public ArrayList slopes = new ArrayList();
+	public ArrayList fans = new ArrayList();
 	
 	// Use this for initialization
 	void Start () {
