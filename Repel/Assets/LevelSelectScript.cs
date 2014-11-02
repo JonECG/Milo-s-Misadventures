@@ -9,10 +9,16 @@ public class LevelSelectScript : MonoBehaviour {
 	int numColumns = 4;
 	int numRows = 10;
 
+	float yDisplacement = 0.0f;
+	bool mouseWasDown = false;
+	float prevY = 0.0f; 
+	Vector3 startPos; 
+	GameObject text; 
 	// Use this for initialization
 	void Start () 
 	{
-
+		text = GameObject.Find ("Title");
+		startPos = text.transform.position;
 	}
 	
 	// Update is called once per frame
@@ -20,6 +26,19 @@ public class LevelSelectScript : MonoBehaviour {
 	{
 		buttonWidth = Screen.width/numColumns;
 		buttonHeight = Screen.height/numRows;
+
+		if (!mouseWasDown && Input.GetMouseButton (0)) {
+						prevY = Input.mousePosition.y;
+			mouseWasDown=true;
+				} else if (Input.GetMouseButton (0)) {
+			yDisplacement = prevY-Input.mousePosition.y;
+				} else {
+			mouseWasDown =false;
+				}
+		Vector3 newPos = new Vector3 (startPos.x, startPos.y -(yDisplacement/Screen.height), startPos.z);
+		text.gameObject.transform.position = newPos;
+
+
 	}
 
 	bool checkButton(int num, string text)
@@ -30,7 +49,7 @@ public class LevelSelectScript : MonoBehaviour {
 
 	bool customButton (float row, float column, string text)
 	{
-		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row, buttonWidth, buttonHeight), text);
+		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + yDisplacement, buttonWidth, buttonHeight), text);
 	}
 
 	void OnGUI() 
@@ -41,33 +60,32 @@ public class LevelSelectScript : MonoBehaviour {
 			//Go to the main menu
 		}
 
-		if (checkButton(2,"Up and up"))
+		if (checkButton(3,"Tutorial: Up and up"))
 		{
 			Application.LoadLevel( "JumpAndDownPractice_1" );
 		}
 
 		
-		if (checkButton (3,"Dashing along"))
+		if (checkButton (2,"Tutorial: Dashing along"))
 		{
 			Application.LoadLevel( "TalansLevel" );
 		}
 
-		if (checkButton(4, "New Heights")) 
+		if (checkButton(1, "Tutorial: New Heights")) 
 		{
 			Application.LoadLevel( "UpTutorial" );
 		}
+// 		if (checkButton (1, "Hold it!")) 
+// 		{
+// 			Application.LoadLevel( "testScene" );
+// 		}
 
-		if (checkButton (1, "Hold it!")) 
-		{
-			Application.LoadLevel( "testScene" );
-		}
-
-		if (checkButton (5, "Closed Spaces"))
+		if (checkButton (4, "Closed Spaces"))
 		{
 			Application.LoadLevel( "AJLevel" );
 		}
 
-		if (checkButton (6, "FANS")) {
+		if (checkButton (5, "FANS")) {
 						Application.LoadLevel ("AJLevel2");
 				}
 
