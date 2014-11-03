@@ -14,6 +14,7 @@ public class LevelSelectScript : MonoBehaviour {
 	float prevY = 0.0f; 
 	Vector3 startPos; 
 	GameObject text; 
+	float totalDis=0.0f;
 	// Use this for initialization
 	void Start () 
 	{
@@ -35,10 +36,12 @@ public class LevelSelectScript : MonoBehaviour {
 				} else {
 			mouseWasDown =false;
 				}
-		Vector3 newPos = new Vector3 (startPos.x, startPos.y -(yDisplacement/Screen.height), startPos.z);
+		totalDis += yDisplacement/5;
+		Vector3 newPos = new Vector3 (startPos.x, text.gameObject.transform.position.y -(yDisplacement/Screen.height)/5, startPos.z);
 		text.gameObject.transform.position = newPos;
+		yDisplacement = 0.0f;
 
-
+		text.gameObject.SetActive(false);
 	}
 
 	bool checkButton(int num, string text)
@@ -49,7 +52,7 @@ public class LevelSelectScript : MonoBehaviour {
 
 	bool customButton (float row, float column, string text)
 	{
-		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + yDisplacement, buttonWidth, buttonHeight), text);
+		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis/5, buttonWidth, buttonHeight), text);
 	}
 
 	void OnGUI() 
@@ -64,6 +67,11 @@ public class LevelSelectScript : MonoBehaviour {
 		{
 			Application.LoadLevel( "JumpAndDownPractice_1" );
 		}
+		if (checkButton(4,"Tutorial: Hold it!"))
+		{
+			Application.LoadLevel( "leftTutorial" );
+		}
+
 
 		
 		if (checkButton (2,"Tutorial: Dashing along"))
@@ -80,16 +88,16 @@ public class LevelSelectScript : MonoBehaviour {
 // 			Application.LoadLevel( "testScene" );
 // 		}
 
-		if (checkButton (4, "Closed Spaces"))
+		if (checkButton (5, "Closed Spaces"))
 		{
 			Application.LoadLevel( "AJLevel" );
 		}
 
-		if (checkButton (5, "FANS")) {
+		if (checkButton (6, "FANS")) {
 			Application.LoadLevel ("AJLevel2");
 		}
 
-		if (checkButton (6, "Combined Skills")) {
+		if (checkButton (7, "Combined Skills")) {
 			Application.LoadLevel ("AJLevel3");
 		}
 
