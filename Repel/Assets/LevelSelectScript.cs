@@ -86,8 +86,12 @@ public class LevelSelectScript : MonoBehaviour {
 		}
 
 		if (checkButton (5, "FANS")) {
-						Application.LoadLevel ("AJLevel2");
-				}
+			Application.LoadLevel ("AJLevel2");
+		}
+
+		if (checkButton (6, "Combined Skills")) {
+			Application.LoadLevel ("AJLevel3");
+		}
 
 
 
