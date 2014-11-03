@@ -23,9 +23,9 @@ public class PlayTheme : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		audio.PlayOneShot (theme, 1.0f);
 		audio.loop = true;
+		audio.Play ();
+
 	
 	}
 	
