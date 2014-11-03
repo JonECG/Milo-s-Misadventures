@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour {
 						{
 							if (aboveFan && belowFan || inAir)
 							{
-								vSpeed = -13;
+								vSpeed = -15;
 							}
 							else
 								if (aboveFan)
@@ -216,8 +216,9 @@ public class PlayerController : MonoBehaviour {
 							}
 							else
 							{
-								vSpeed = -13;
+								vSpeed = -15;
 							}
+							hSpeed = 1;
 						}
 					}
 					else
