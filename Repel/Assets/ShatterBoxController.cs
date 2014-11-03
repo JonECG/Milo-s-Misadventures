@@ -34,6 +34,7 @@ public class ShatterBoxController : MonoBehaviour {
 					((GameObject)shatters[i]).SetActive( false );
 					shatters.RemoveAt(i);
 					i--;
+					audio.PlayOneShot(audio.clip);
 				}
 			}
 		}

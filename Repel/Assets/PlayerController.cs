@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour {
 	public float timeInTween;
 	public float compensateTweenTime = 1;
 	public bool startGame;
+	public AudioClip swipeSound;
 	
 	public float airTime;
 	
@@ -74,6 +75,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log( "Swiped" );
 			lastSwipe = s;
 			lastSwipeTime = Time.time;
+			audio.PlayOneShot(swipeSound,3.0f);
 			Debug.Log( s.direction );
 		}
 	}
