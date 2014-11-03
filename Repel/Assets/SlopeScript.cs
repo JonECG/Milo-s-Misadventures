@@ -8,7 +8,7 @@ public class SlopeScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GenMesh();
-		GameObject.Find( "LevelController" ).GetComponent<LevelController>().slopes.Add( this.gameObject );
+		GameObject.Find( "LevelController" ).GetComponent<LevelController>().slopes.add ( this.gameObject );
 	}
 	
 	// Update is called once per frame
