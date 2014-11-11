@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour {
 	public float hSpeed;
 	public float vSpeed;
 	public bool inAir;
+	public Vector3 off;
 	bool aboveFan;
 	bool belowFan;
 	// Use this for initialization
@@ -274,7 +275,7 @@ public class PlayerController : MonoBehaviour {
 		if( !tutWait )
 		{
 			airTime+=Time.deltaTime;
-			Vector3 off = new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
+			off = new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
 			transform.position = transform.position + off;
 			actualPosition += off;
 			
