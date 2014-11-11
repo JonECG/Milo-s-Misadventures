@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
-	bool tutWait;
+	public bool tutWait;
 	
 	Swipe lastSwipe;
 	float lastSwipeTime;
@@ -328,5 +328,9 @@ public class PlayerController : MonoBehaviour {
         {
             loadLevel();
         }
+		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), "MainMenu"))
+		{
+			Application.LoadLevel( "LevelSelect" );
+		}
     }
 }
