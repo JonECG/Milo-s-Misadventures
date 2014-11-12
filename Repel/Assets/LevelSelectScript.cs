@@ -124,8 +124,22 @@ public class LevelSelectScript : MonoBehaviour {
 		if (checkButton (7, "Combined Skills")) {
 			Application.LoadLevel ("AJLevel3");
 		}
-
-
+		
+		if (checkButton (8, "Forkroads")) {
+			Application.LoadLevel ("ColterMidLevel");
+		}
+		
+		if (checkButton (9, "Dash up")) {
+			Application.LoadLevel ("TalanDash");
+		}
+		
+		if (checkButton (10, "Acrobatics")) {
+			Application.LoadLevel ("AJLevel4");
+		}
+		
+		if (checkButton (11, "Leap of Faith")) {
+			Application.LoadLevel ("leapoffaith");
+		}
 
 // 		if (checkButton (1, "Hold it!")) 
 // 		{
