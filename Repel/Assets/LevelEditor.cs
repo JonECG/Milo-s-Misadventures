@@ -89,7 +89,15 @@ public class LevelEditor : MonoBehaviour {
 				ss.leftPerc = ( ly - clickHistory[by].y ) / ( clickHistory[ty].y - clickHistory[by].y );
 				ss.rightPerc = ( ry - clickHistory[by].y ) / ( clickHistory[ty].y - clickHistory[by].y );
 				
-				numClicks = 0;
+				bool useRight = clickHistory[2].x > ( (clickHistory[lx].x+clickHistory[rx].x)/2.0f );
+				float bot = clickHistory[by].y;
+				float lastX = (useRight) ? clickHistory[rx].x : clickHistory[lx].x;
+				float lastY = (useRight) ? ry : ly;
+				
+				numClicks = 2;
+				
+				clickHistory[0] = new Vector3( lastX, bot, 0 );
+				clickHistory[1] = new Vector3( lastX, lastY, 0 );
 			}
 		}
 	}

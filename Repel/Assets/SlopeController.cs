@@ -81,15 +81,31 @@ public class SlopeController : MonoBehaviour {
 					{
 						if( ny > player.transform.position.y + 2 )
 						{
-							Application.LoadLevel( Application.loadedLevel );
+							if( slop.isShatterable && ( player.GetComponent<PlayerController>().hSpeed > 1.1 || ( Mathf.Abs( player.GetComponent<PlayerController>().vSpeed ) > 10 ) ) )
+							{
+								Destroy( slop.gameObject );
+								slopes.RemoveAt( i );
+								i--;
+							}
+							else
+								Application.LoadLevel( Application.loadedLevel );
 						}
 						else
 						{
-							player.transform.position = new Vector3( player.transform.position.x, ny, player.transform.position.z );
-							player.GetComponent<PlayerController>().actualPosition = player.transform.position;
-							player.GetComponent<PlayerController>().inAir = false;
-							player.GetComponent<PlayerController>().airTime = 0;
-							player.GetComponent<PlayerController>().vSpeed = 0;
+							if( slop.isShatterable && Mathf.Abs( player.GetComponent<PlayerController>().vSpeed ) > 15 )
+							{
+								Destroy( slop.gameObject );
+								slopes.RemoveAt( i );
+								i--;
+							}
+							else
+							{
+								player.transform.position = new Vector3( player.transform.position.x, ny, player.transform.position.z );
+								player.GetComponent<PlayerController>().actualPosition = player.transform.position;
+								player.GetComponent<PlayerController>().inAir = false;
+								player.GetComponent<PlayerController>().airTime = 0;
+								player.GetComponent<PlayerController>().vSpeed = 0;
+							}
 						}
 					}
 				}
