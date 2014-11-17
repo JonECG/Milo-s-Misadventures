@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void swipeResponse( Swipe s )
 	{
+		tapResponse( new Touch() );
 		if( !startGame )
 		{
 			Debug.Log( "Swiped" );
