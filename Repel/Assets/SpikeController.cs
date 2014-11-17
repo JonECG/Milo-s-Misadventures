@@ -27,7 +27,7 @@ public class SpikeController : MonoBehaviour {
 				float dist = (player.gameObject.transform.position - ((GameObject)spikes[i]).transform.position).sqrMagnitude;
 				if( dist < 2 )
 				{
-					Application.LoadLevel( Application.loadedLevel );
+					player.GetComponent<PlayerController>().Die();
 				}
 			}
 		}

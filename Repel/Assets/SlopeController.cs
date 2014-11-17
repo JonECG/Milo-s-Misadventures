@@ -88,7 +88,9 @@ public class SlopeController : MonoBehaviour {
 								i--;
 							}
 							else
-								Application.LoadLevel( Application.loadedLevel );
+							{
+								player.GetComponent<PlayerController>().Die();
+							}
 						}
 						else
 						{
