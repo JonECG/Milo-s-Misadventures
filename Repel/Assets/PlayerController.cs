@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour {
 		timeInTween = compensateTweenTime;
 		if ( !hasCheck )
 		{
+			PlayerSoundScript.Instance.playEnterLevel();
 			startPosition = new Vector3( transform.position.x, transform.position.y, transform.position.z );
 		}
 		else
@@ -97,7 +98,7 @@ public class PlayerController : MonoBehaviour {
 	public void Die()
 	{
 		Application.LoadLevel( Application.loadedLevel );
-		
+		PlayerSoundScript.Instance.playEnterDeath();
 	}
 
 
@@ -174,6 +175,7 @@ public class PlayerController : MonoBehaviour {
 			switch( lastSwipe.direction )
 			{
 				case Direction.UP:
+					PlayerSoundScript.Instance.playJump();
 					if (aboveFan && belowFan)
 					{
 						vSpeed = 10;
@@ -199,6 +201,7 @@ public class PlayerController : MonoBehaviour {
 					{
 						if (!inAir)
 						{
+							PlayerSoundScript.Instance.playSuperJump();
 							if (aboveFan && belowFan)
 							{
 								vSpeed = 14;
@@ -221,6 +224,7 @@ public class PlayerController : MonoBehaviour {
 						}
 						else
 						{
+							PlayerSoundScript.Instance.playDive();
 							if (aboveFan && belowFan || inAir)
 							{
 								vSpeed = -15;
@@ -244,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 					}
 					else
 					{
-						
+						PlayerSoundScript.Instance.playSuperJump();
 						if (aboveFan)
 						{
 							vSpeed = 20;
@@ -267,10 +271,11 @@ public class PlayerController : MonoBehaviour {
 					}
 					break;
 				case Direction.LEFT:
+					PlayerSoundScript.Instance.playStop();
 					hSpeed = 0;
 					break;
 				case Direction.RIGHT:
-					
+					PlayerSoundScript.Instance.playDash();
 					hSpeed = 3;
 					if (aboveFan)
 					{
