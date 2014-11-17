@@ -319,6 +319,7 @@ public class PlayerController : MonoBehaviour {
 				transform.FindChild("particle").GetComponent<ParticleSystem>().Pause();
 				lastSwipeTime = -50;
 			}
+			GetComponent<TapAndSlash>().InterruptMouseDown();
 		}
 	}
 

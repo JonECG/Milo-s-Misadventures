@@ -113,6 +113,45 @@ public class TapAndSlash : MonoBehaviour
 	
 	float mouseXDown, mouseYDown;
 	bool trackingMouse;
+	
+	public void InterruptMouseDown()
+	{
+		if( trackingMouse )
+		{
+			float dir = (float) Math.Atan2( Input.mousePosition.y - mouseYDown, Input.mousePosition.x-mouseXDown );
+			float dist = (float) Math.Sqrt( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) );
+			
+			
+			//timeTapStart = Time.time;
+			GetComponent<TapAndSlashDraw>().addUntap( Input.mousePosition.x, Input.mousePosition.y );
+			GetComponent<TapAndSlashDraw>().addSwipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
+			
+			trackingMouse = false;
+			
+			Action<Swipe> swiping = ( listening ) ? nextSwipeAction : baseSwipeAction;
+			Action<Touch> tapping = ( listening ) ? nextTapAction : baseTapAction;
+			
+			listening = false;
+			
+			if( dist > minSwipeDistance )
+			{
+				Swipe s = new Swipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
+				if( swiping != null )
+					swiping(s);
+				history.Add( s );
+			}
+			else
+			{
+				Touch t = new Touch( Input.mousePosition.x, Input.mousePosition.y );
+				if( tapping != null )
+					tapping(t);
+				history.Add( t );
+			}
+			if( !listening )
+				history.Clear();
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		
@@ -132,38 +171,10 @@ public class TapAndSlash : MonoBehaviour
 			
 			if( trackingMouse )
 			{
-				float dir = (float) Math.Atan2( Input.mousePosition.y - mouseYDown, Input.mousePosition.x-mouseXDown );
-				float dist = (float) Math.Sqrt( (Input.mousePosition.x-mouseXDown) * (Input.mousePosition.x-mouseXDown) + (Input.mousePosition.y-mouseYDown) * (Input.mousePosition.y-mouseYDown) );
 
 				if( !Input.GetMouseButton( 0 ) )
 				{
-					//timeTapStart = Time.time;
-					GetComponent<TapAndSlashDraw>().addUntap( Input.mousePosition.x, Input.mousePosition.y );
-					GetComponent<TapAndSlashDraw>().addSwipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
-					
-					trackingMouse = false;
-					
-					Action<Swipe> swiping = ( listening ) ? nextSwipeAction : baseSwipeAction;
-					Action<Touch> tapping = ( listening ) ? nextTapAction : baseTapAction;
-					
-					listening = false;
-					
-					if( dist > minSwipeDistance )
-					{
-						Swipe s = new Swipe( mouseXDown, mouseYDown, Input.mousePosition.x, Input.mousePosition.y );
-						if( swiping != null )
-							swiping(s);
-						history.Add( s );
-					}
-					else
-					{
-						Touch t = new Touch( Input.mousePosition.x, Input.mousePosition.y );
-						if( tapping != null )
-							tapping(t);
-						history.Add( t );
-					}
-					if( !listening )
-						history.Clear();
+					InterruptMouseDown();
 				}
 			}
 			else
