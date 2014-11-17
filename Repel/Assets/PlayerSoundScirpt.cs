@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerSoundScirpt : MonoBehaviour {
+public class PlayerSoundScript : MonoBehaviour {
 
-	private static PlayerSoundScirpt instance = null;
-	public static PlayerSoundScirpt Instance {
+	private static PlayerSoundScript instance = null;
+	public static PlayerSoundScript Instance {
 		get { return instance; }
 	}
 	void Awake() {
@@ -29,9 +29,54 @@ public class PlayerSoundScirpt : MonoBehaviour {
 
 	public void playEnterLevel()
 	{
-		int toPlay = (int)Random.Range (0.0f, enterLevel.Length-0.51f);
-		audio.clip = enterLevel [toPlay];
-		audio.Play ();
+		playMeSound (enterLevel);
+
+	}
+
+	public void playEnterDeath()
+	{
+		playMeSound (death);
+		
+	}
+	
+	public void playJump()
+	{
+		playMeSound (jump);
+
+	}
+
+
+	public void playSuperJump()
+	{
+		playMeSound (superJump);
+		
+	}
+	
+	public void playDash()
+	{
+		playMeSound (dash);
+	}
+
+
+	public void playDive()
+	{
+		playMeSound (dive);
+	}
+
+	public void playStop()
+	{
+		playMeSound (stop);
+	}
+
+
+	public void playMeSound(AudioClip[] array)
+	{
+		if(!audio.isPlaying)
+		{
+			int toPlay = (int)Random.Range (0.0f, array.Length-0.51f);
+			audio.clip = array [toPlay];
+			audio.Play ();
+		}
 	}
 
 

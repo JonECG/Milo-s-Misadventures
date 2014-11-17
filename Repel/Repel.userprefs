@@ -1,10 +1,11 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\PlayerSoundScirpt.cs">
     <Files>
-      <File FileName="..\..\capstone_coltercvach\BombVoyage\Assets\Scripts\ManagerScripts\MouseControllerScript.cs" Line="142" Column="5" />
-      <File FileName="Assets\PlayerSoundScirpt.cs" Line="38" Column="2" />
-      <File FileName="Assets\PlayTheme.cs" Line="8" Column="1" />
+      <File FileName="Assets\PlayerSoundScirpt.cs" Line="96" Column="1" />
+      <File FileName="..\..\capstone_coltercvach\BombVoyage\Assets\Scripts\ManagerScripts\MouseControllerScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\PlayerSoundScirpt.cs" Line="80" Column="3" />
+      <File FileName="Assets\PlayTheme.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
