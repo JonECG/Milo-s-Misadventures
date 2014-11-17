@@ -14,6 +14,8 @@ public class LevelSelectScript : MonoBehaviour {
 	float prevY = 0.0f; 
 	Vector3 startPos; 
 	GameObject text; 
+	public Texture lockedTex;
+	public Texture unlockedTex;
 	float totalDis=0.0f;
 
 	int currentButtonCount= 0 ; 
@@ -73,15 +75,37 @@ public class LevelSelectScript : MonoBehaviour {
 	{
 		if (num > currentButtonCount) {
 			currentButtonCount=num;
-				}
-
+		}
+		
 		return customButton (1.5f * num, 1.5f, ""+num+") "+text);
+	}
+
+	bool checkButtonLock(int num, string text, bool locked)
+	{
+		if (num > currentButtonCount) {
+			currentButtonCount=num;
+		}
+		
+		return customButtonLock (1.5f * num, 1.5f, ""+num+") "+text,locked);
 	}
 
 
 	bool customButton (float row, float column, string text)
 	{
 		return GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text);
+	}
+
+	bool customButtonLock (float row, float column, string text, bool locked)
+	{
+		if (locked)
+		{
+			GUI.DrawTexture(new Rect(buttonWidth*(column-1),buttonHeight*row + totalDis,buttonHeight,buttonHeight), lockedTex, ScaleMode.ScaleToFit, true);
+		}
+		else
+		{
+			GUI.DrawTexture(new Rect(buttonWidth*(column-1),buttonHeight*row + totalDis,buttonHeight,buttonHeight), unlockedTex, ScaleMode.ScaleToFit, true);
+		}
+		return (GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text) && (!locked));
 	}
 
 	void OnGUI() 
@@ -93,13 +117,13 @@ public class LevelSelectScript : MonoBehaviour {
 		}
 
 
-		if (checkButton(1, "Tutorial: New Heights")) 
+		if (checkButtonLock(1, "Tutorial: New Heights",false)) 
 		{
 			Application.LoadLevel( "UpTutorial" );
 		}
 
 		
-		if (checkButton (2,"Tutorial: Dashing along"))
+		if (checkButtonLock(2,"Tutorial: Dashing along",true))
 		{
 			Application.LoadLevel( "TalansLevel" );
 		}
