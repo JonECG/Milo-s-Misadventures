@@ -19,12 +19,14 @@ public class LevelSelectScript : MonoBehaviour {
 	float totalDis=0.0f;
 
 	int currentButtonCount= 0 ; 
+	int currLevel =0;
 	// Use this for initialization
 	void Start () 
 	{
 		yDisplacement = 0.0f;
 		//totalDis = -30;
 		text = GameObject.Find ("Title");
+		
 		startPos = text.transform.position;
 	}
 	
@@ -33,7 +35,8 @@ public class LevelSelectScript : MonoBehaviour {
 	{
 
 
-
+		currLevel = PlayerPrefs.GetInt ("LevelBeat");
+		
 		buttonWidth = Screen.width/numColumns;
 		buttonHeight = Screen.height/numRows;
 
@@ -76,17 +79,38 @@ public class LevelSelectScript : MonoBehaviour {
 		if (num > currentButtonCount) {
 			currentButtonCount=num;
 		}
-		
-		return customButton (1.5f * num, 1.5f, ""+num+") "+text);
+
+		bool worked = customButton (1.5f * num, 1.5f, ""+num+") "+text);
+		if(worked)
+		{
+		LevelNumberHolder.currentLevel = num+1;
+		}
+
+		return worked;
 	}
 
-	bool checkButtonLock(int num, string text, bool locked)
+	bool checkButtonLock(int num, string text)
 	{
+		bool locked = (num <= currLevel);
 		if (num > currentButtonCount) {
 			currentButtonCount=num;
 		}
+
+		if (locked) {
+			bool stopHere=false;
+				}
+		else{
+			bool stopHere = false;
+		}
+
+		bool worked = customButtonLock (1.5f * num, 1.5f, ""+num+") "+text,!locked);
+		if(worked)
+		{
+		LevelNumberHolder.currentLevel = num+1;
+		}
+
 		
-		return customButtonLock (1.5f * num, 1.5f, ""+num+") "+text,locked);
+		return worked;
 	}
 
 
@@ -110,6 +134,18 @@ public class LevelSelectScript : MonoBehaviour {
 
 	void OnGUI() 
 	{
+
+		if(customButton (10, 3, "DebugUnlock"))
+		{
+			LevelNumberHolder.setLevel(1000);
+		}
+		if(customButton (11, 3, "DebugLock"))
+		{
+			LevelNumberHolder.setLevel(0);
+		}
+
+
+
 		PlayerController.hasCheck = false;
 		//if (GUI.Button (new Rect (10, 10, buttonWidth/2, buttonHeight), "Back"))
 		{
@@ -117,51 +153,51 @@ public class LevelSelectScript : MonoBehaviour {
 		}
 
 
-		if (checkButtonLock(1, "Tutorial: New Heights",false)) 
+		if (checkButton(1, "Tutorial: New Heights")) 
 		{
 			Application.LoadLevel( "UpTutorial" );
 		}
 
 		
-		if (checkButtonLock(2,"Tutorial: Dashing along",true))
+		if (checkButtonLock(2,"Tutorial: Dashing along"))
 		{
 			Application.LoadLevel( "TalansLevel" );
 		}
 
-		if (checkButton(3,"Tutorial: Up and up"))
+		if (checkButtonLock(3,"Tutorial: Up and up"))
 		{
 			Application.LoadLevel( "JumpAndDownPractice_1" );
 		}
-		if (checkButton(4,"Tutorial: Hold it!"))
+		if (checkButtonLock(4,"Tutorial: Hold it!"))
 		{
 			Application.LoadLevel( "leftTutorial" );
 		}
-		if (checkButton (5, "Closed Spaces"))
+		if (checkButtonLock (5, "Closed Spaces"))
 		{
 			Application.LoadLevel( "AJLevel" );
 		}
 		
-		if (checkButton (6, "FANS")) {
+		if (checkButtonLock (6, "FANS")) {
 			Application.LoadLevel ("AJLevel2");
 		}
 		
-		if (checkButton (7, "Combined Skills")) {
+		if (checkButtonLock (7, "Combined Skills")) {
 			Application.LoadLevel ("AJLevel3");
 		}
 		
-		if (checkButton (8, "Forkroads")) {
+		if (checkButtonLock (8, "Forkroads")) {
 			Application.LoadLevel ("ColterMidLevel");
 		}
 		
-		if (checkButton (9, "Dash up")) {
+		if (checkButtonLock (9, "Dash up")) {
 			Application.LoadLevel ("TalanDash");
 		}
 		
-		if (checkButton (10, "Acrobatics")) {
+		if (checkButtonLock (10, "Acrobatics")) {
 			Application.LoadLevel ("AJLevel4");
 		}
 		
-		if (checkButton (11, "Leap of Faith")) {
+		if (checkButtonLock (11, "Leap of Faith")) {
 			Application.LoadLevel ("leapoffaith");
 		}
 

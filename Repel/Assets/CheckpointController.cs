@@ -36,6 +36,7 @@ public class CheckpointController : MonoBehaviour {
 								if (dist < 6) {
 										if (((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().goal) {
 												Application.LoadLevel ( "LevelSelect" );
+						LevelNumberHolder.setHighestLevel();
 										} else {
 												if (!((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().triggered) {
 														((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().triggered = true;
