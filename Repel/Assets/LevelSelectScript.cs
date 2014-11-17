@@ -20,6 +20,8 @@ public class LevelSelectScript : MonoBehaviour {
 
 	int currentButtonCount= 0 ; 
 	int currLevel =0;
+	public Texture2D buttonImage;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -134,6 +136,11 @@ public class LevelSelectScript : MonoBehaviour {
 
 	void OnGUI() 
 	{
+
+		GUI.skin.button.normal.background = buttonImage;
+		GUI.skin.button.hover.background = buttonImage;
+		GUI.skin.button.active.background = buttonImage;
+
 
 		if(customButton (10, 3, "DebugUnlock"))
 		{
