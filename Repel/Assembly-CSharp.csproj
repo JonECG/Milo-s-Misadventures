@@ -54,10 +54,12 @@
      <Compile Include="Assets\FanScript.cs" />
      <Compile Include="Assets\FollowCam.cs" />
      <Compile Include="Assets\FollowPlayer.cs" />
+     <Compile Include="Assets\GeneralButtonController.cs" />
      <Compile Include="Assets\HardwareButtonRouter.cs" />
      <Compile Include="Assets\LevelChanger.cs" />
      <Compile Include="Assets\LevelController.cs" />
      <Compile Include="Assets\LevelEditor.cs" />
+     <Compile Include="Assets\LevelNumberHolder.cs" />
      <Compile Include="Assets\LevelSelectScript.cs" />
      <Compile Include="Assets\PlayTheme.cs" />
      <Compile Include="Assets\PlayerController.cs" />

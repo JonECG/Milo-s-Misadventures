@@ -31,6 +31,13 @@ public class PlayerController : MonoBehaviour {
 	public Vector3 off;
 	bool aboveFan;
 	bool belowFan;
+
+	GUIContent restartContect = new GUIContent();
+	public Texture2D buttonImage;
+	string restartText = "Restart";
+	GUIContent mainMenuContect = new GUIContent();
+	string mainMenuText = "MainMenu";
+
 	// Use this for initialization
 	void Start () {
 		timeInTween = compensateTweenTime;
@@ -56,6 +63,11 @@ public class PlayerController : MonoBehaviour {
 		belowFan = false;
 		GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
 		GetComponent<TapAndSlash>().Subscribe( tapResponse, swipeResponse );
+
+		//restartContect.image = buttonImage;
+		restartContect.text = restartText;
+		//mainMenuContect.image = buttonImage;
+		mainMenuContect.text = mainMenuText;
 	}
 	
 	void tapResponse( Touch t )
@@ -326,11 +338,16 @@ public class PlayerController : MonoBehaviour {
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), "Reset"))
+		GUI.skin.button.normal.background = buttonImage;
+		GUI.skin.button.hover.background = buttonImage;
+		GUI.skin.button.active.background = buttonImage;
+
+
+		if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), restartContect))
         {
             loadLevel();
         }
-		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), "MainMenu"))
+		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), mainMenuContect))
 		{
 			Application.LoadLevel( "LevelSelect" );
 		}
