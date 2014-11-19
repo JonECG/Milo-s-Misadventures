@@ -53,7 +53,7 @@ public class LevelSelectScript : MonoBehaviour {
 			mouseWasDown =false;
 			//yDisplacement=0.0f;
 				}
-		Debug.Log ("TotalDis: " +totalDis);
+		//Debug.Log ("TotalDis: " +totalDis);
 		totalDis = yDisplacement;
 		//Vector3 newPos = new Vector3 (startPos.x, text.gameObject.transform.position.y -(yDisplacement/Screen.height)/2, startPos.z);
 		//text.gameObject.transform.position = newPos;
@@ -133,7 +133,15 @@ public class LevelSelectScript : MonoBehaviour {
 		}
 		return (GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text) && (!locked));
 	}
-
+	
+	void lockButtonHelper( int position, string buttonName, string levelName )
+	{
+		if (checkButtonLock(position,buttonName))
+		{
+			ScreenTransitioner.Instance.TransitionTo( levelName );
+		}
+	}
+	
 	void OnGUI() 
 	{
 
@@ -159,64 +167,23 @@ public class LevelSelectScript : MonoBehaviour {
 			//Go to the main menu
 		}
 
-
 		if (checkButton(1, "Tutorial: New Heights")) 
 		{
-			Application.LoadLevel( "UpTutorial" );
+			ScreenTransitioner.Instance.TransitionTo( "UpTutorial" );
 		}
 
+		int place = 2;
 		
-		if (checkButtonLock(2,"Tutorial: Dashing along"))
-		{
-			Application.LoadLevel( "TalansLevel" );
-		}
-
-		if (checkButtonLock(3,"Tutorial: Up and up"))
-		{
-			Application.LoadLevel( "JumpAndDownPractice_1" );
-		}
-		if (checkButtonLock(4,"Tutorial: Hold it!"))
-		{
-			Application.LoadLevel( "leftTutorial" );
-		}
-		if (checkButtonLock (5, "Closed Spaces"))
-		{
-			Application.LoadLevel( "AJLevel" );
-		}
-		
-		if (checkButtonLock (6, "FANS")) {
-			Application.LoadLevel ("AJLevel2");
-		}
-		
-		if (checkButtonLock (7, "Combined Skills")) {
-			Application.LoadLevel ("AJLevel3");
-		}
-		
-		if (checkButtonLock (8, "Forkroads")) {
-			Application.LoadLevel ("ColterMidLevel");
-		}
-		
-		if (checkButtonLock (9, "Dash up")) {
-			Application.LoadLevel ("TalanDash");
-		}
-		
-		if (checkButtonLock (10, "Acrobatics")) {
-			Application.LoadLevel ("AJLevel4");
-		}
-		
-		if (checkButtonLock (11, "Leap of Faith")) {
-			Application.LoadLevel ("leapoffaith");
-		}
-
-// 		if (checkButton (1, "Hold it!")) 
-// 		{
-// 			Application.LoadLevel( "testScene" );
-// 		}
-
-
-
-
-
+		lockButtonHelper( place++, "Tutorial: Dashing along", "TalansLevel" );
+		lockButtonHelper( place++, "Tutorial: Up and up", "JumpAndDownPractice_1" );
+		lockButtonHelper( place++, "Tutorial: Hold it!", "leftTutorial" );
+		lockButtonHelper( place++, "Closed Spaces", "AJLevel" );
+		lockButtonHelper( place++, "Fanning Out", "AJLevel2" );
+		lockButtonHelper( place++, "Combined Skills", "AJLevel3" );
+		lockButtonHelper( place++, "Forkroads", "ColterMidLevel" );
+		lockButtonHelper( place++, "Dash up", "TalanDash" );
+		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
+		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
 
 	}
 }

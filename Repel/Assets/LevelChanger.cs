@@ -23,7 +23,7 @@ public class LevelChanger : MonoBehaviour {
 	private void resolveCollision(RaycastHit hit)
 	{
 		if (hit.collider==this.gameObject.collider) {
-			Application.LoadLevel(toLoad);
+			ScreenTransitioner.Instance.TransitionTo(toLoad);
 		}
 		
 	}

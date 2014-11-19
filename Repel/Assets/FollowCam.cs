@@ -10,17 +10,26 @@ public class FollowCam : MonoBehaviour {
 	
 	private Vector3 lastTo;
 	
+	private bool snap;
+	
 	// Use this for initialization
 	void Start () {
-		this.transform.position = target.transform.position + targetOffset + cameraOffset;
-		this.transform.rotation = Quaternion.LookRotation( lastTo-transform.position );
-		lastTo = target.transform.position + targetOffset;
+		snap = true;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		this.transform.position = ( this.transform.position * tweenCoefficient + target.transform.position + targetOffset + cameraOffset ) / (tweenCoefficient + 1 );
-		lastTo = ( lastTo * tweenCoefficient + target.transform.position + targetOffset ) / ( tweenCoefficient + 1 );
+	void LateUpdate () {
+		if( snap )
+		{
+			this.transform.position = target.transform.position + targetOffset + cameraOffset;
+			this.transform.rotation = Quaternion.LookRotation( lastTo-transform.position );
+			lastTo = target.transform.position + targetOffset;
+			snap = false;
+		}
+		Vector3 intendedFromDelta = ( this.transform.position * tweenCoefficient + target.transform.position + targetOffset + cameraOffset ) / (tweenCoefficient + 1 ) - this.transform.position;
+		this.transform.position += intendedFromDelta*Time.deltaTime*60;
+		Vector3 intendedToDelta = ( lastTo * tweenCoefficient + target.transform.position + targetOffset ) / ( tweenCoefficient + 1 ) - lastTo;
+		lastTo += intendedToDelta*Time.deltaTime*60; 
 		this.transform.rotation = Quaternion.LookRotation( lastTo-transform.position );
 	}
 }

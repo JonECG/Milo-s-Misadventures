@@ -22,7 +22,7 @@ public class TutorialView : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.Log( repeat );
+		//Debug.Log( repeat );
 		float target = (repeat) ? 1 : 0;
 		float tweenDisp = 10;
 		shadeAmount = ( shadeAmount * tweenDisp + target ) / ( tweenDisp + 1 );

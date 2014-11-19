@@ -40,35 +40,45 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		timeInTween = compensateTweenTime;
-		if ( !hasCheck )
+		int i;
+		if( !MainMenuController.hasVisitedMainMenu )
 		{
-			PlayerSoundScript.Instance.playEnterLevel();
-			startPosition = new Vector3( transform.position.x, transform.position.y, transform.position.z );
+			MainMenuController.differentSceneRedirect = true;
+			MainMenuController.reloadTarget = Application.loadedLevelName;
+			Application.LoadLevel( "MainMenu" );
 		}
 		else
 		{
-			transform.position = new Vector3( startPosition.x, startPosition.y, startPosition.z );
-			actualPosition = transform.position;
+			timeInTween = compensateTweenTime;
+			if ( !hasCheck )
+			{
+				PlayerSoundScript.Instance.playEnterLevel();
+				startPosition = new Vector3( transform.position.x, transform.position.y, transform.position.z );
+			}
+			else
+			{
+				transform.position = new Vector3( startPosition.x, startPosition.y, startPosition.z );
+				actualPosition = transform.position;
+			}
+			
+			startGame = true;
+			vSpeed = 0;
+			hSpeed = 1;
+			airTime = 0;
+			inAir = true;
+			lastSwipeTime = -50;
+			lastEnergyTime = -50;
+			tutWait = true;
+			aboveFan = false;
+			belowFan = false;
+			GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
+			GetComponent<TapAndSlash>().Subscribe( tapResponse, swipeResponse );
+	
+			//restartContect.image = buttonImage;
+			restartContect.text = restartText;
+			//mainMenuContect.image = buttonImage;
+			mainMenuContect.text = mainMenuText;
 		}
-		
-		startGame = true;
-		vSpeed = 0;
-		hSpeed = 1;
-		airTime = 0;
-		inAir = true;
-		lastSwipeTime = -50;
-		lastEnergyTime = -50;
-		tutWait = true;
-		aboveFan = false;
-		belowFan = false;
-		GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
-		GetComponent<TapAndSlash>().Subscribe( tapResponse, swipeResponse );
-
-		//restartContect.image = buttonImage;
-		restartContect.text = restartText;
-		//mainMenuContect.image = buttonImage;
-		mainMenuContect.text = mainMenuText;
 	}
 	
 	void tapResponse( Touch t )
@@ -97,8 +107,9 @@ public class PlayerController : MonoBehaviour {
 	
 	public void Die()
 	{
-		Application.LoadLevel( Application.loadedLevel );
 		PlayerSoundScript.Instance.playEnterDeath();
+		ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
+		//Application.LoadLevel( Application.loadedLevel );
 	}
 
 

@@ -40,7 +40,7 @@ public class SlopeScript : MonoBehaviour {
 		MeshFilter filter = (GetComponent(typeof( MeshFilter ) ) as MeshFilter);
 		Mesh mesh = filter.mesh;
 		
-		Debug.Log( "CHANGED" );
+		//Debug.Log( "CHANGED" );
 		
 		Vector2[] newUvs = new Vector2[ mesh.uv.Length ];
 		
