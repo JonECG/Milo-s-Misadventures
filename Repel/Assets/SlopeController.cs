@@ -88,6 +88,7 @@ public class SlopeController : MonoBehaviour {
 								GameObject obj = Instantiate( Resources.Load<GameObject>( "ExplosionParticleEffect" ) ) as GameObject;
 								obj.transform.position = slop.transform.position;
 								obj.GetComponent<ParticleSystem>().Play();
+								ShatterBoxSound.Instance.playSound();
 								i--;
 							}
 							else
@@ -104,6 +105,7 @@ public class SlopeController : MonoBehaviour {
 								GameObject obj = Instantiate( Resources.Load<GameObject>( "ExplosionParticleEffect" ) ) as GameObject;
 								obj.transform.position = slop.transform.position;
 								obj.GetComponent<ParticleSystem>().Play();
+								ShatterBoxSound.Instance.playSound();
 								i--;
 							}
 							else

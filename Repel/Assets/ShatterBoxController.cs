@@ -27,7 +27,8 @@ public class ShatterBoxController : MonoBehaviour {
 			{
 				if( player.GetComponent<PlayerController>().hSpeed < 1.1 )
 				{
-					Application.LoadLevel( Application.loadedLevel );
+					
+					player.GetComponent<PlayerController>().Die();
 				}
 				else
 				{

@@ -27,6 +27,7 @@ public class ShockwaveController : MonoBehaviour {
 			currentTime += Time.deltaTime;
 			if( currentTime > aliveTime )
 			{
+				transform.localScale = new Vector3( 0, 0, 0 );
 				part.enableEmission = false;
 				shouldPlay = false;
 			}

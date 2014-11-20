@@ -114,14 +114,14 @@ public class PlayerController : MonoBehaviour {
 	public void Die()
 	{
 		PlayerSoundScript.Instance.playEnterDeath();
-		ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
+		loadLevel();
 		//Application.LoadLevel( Application.loadedLevel );
 	}
 
 
     public void loadLevel()
     {
-        Application.LoadLevel(Application.loadedLevel);
+		ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
     }
 	
 	// Update is called once per frame
@@ -344,7 +344,7 @@ public class PlayerController : MonoBehaviour {
 				hSpeed -= Mathf.Min( hSpeed - 1, 1.8f*Time.deltaTime );
 			if (transform.position.y < -10 )
 			{
-				Application.LoadLevel( Application.loadedLevel );
+				Die();
 			}
 		}
 		if (!tutWait) {
@@ -382,7 +382,7 @@ public class PlayerController : MonoBehaviour {
         }
 		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), mainMenuContect))
 		{
-			Application.LoadLevel( "LevelSelect" );
+			ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
 		}
     }
 }

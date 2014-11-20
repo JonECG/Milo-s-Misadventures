@@ -35,8 +35,8 @@ public class CheckpointController : MonoBehaviour {
 								float dist = (player.transform.position - ((GameObject)checkpoints [i]).transform.position).sqrMagnitude;
 								if (dist < 6) {
 										if (((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().goal) {
-												Application.LoadLevel ( "LevelSelect" );
-						LevelNumberHolder.setHighestLevel();
+											ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
+											LevelNumberHolder.setHighestLevel();
 										} else {
 												if (!((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().triggered) {
 														((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().triggered = true;
