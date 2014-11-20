@@ -60,12 +60,16 @@
      <Compile Include="Assets\LevelEditor.cs" />
      <Compile Include="Assets\LevelNumberHolder.cs" />
      <Compile Include="Assets\LevelSelectScript.cs" />
+     <Compile Include="Assets\MainMenuController.cs" />
      <Compile Include="Assets\PlayTheme.cs" />
      <Compile Include="Assets\PlayerController.cs" />
-     <Compile Include="Assets\PlayerSoundScirpt.cs" />
+     <Compile Include="Assets\PlayerSoundScript.cs" />
+     <Compile Include="Assets\ScreenTransitioner.cs" />
      <Compile Include="Assets\ScrollingScript.cs" />
      <Compile Include="Assets\ShatterBox.cs" />
      <Compile Include="Assets\ShatterBoxController.cs" />
+     <Compile Include="Assets\ShatterBoxSound.cs" />
+     <Compile Include="Assets\ShockwaveController.cs" />
      <Compile Include="Assets\SlopeController.cs" />
      <Compile Include="Assets\SlopeScript.cs" />
      <Compile Include="Assets\SpikeController.cs" />

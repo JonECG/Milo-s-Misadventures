@@ -38,7 +38,7 @@ public class ShatterBoxController : MonoBehaviour {
 					obj.GetComponent<ParticleSystem>().Play();
 					shatters.RemoveAt(i);
 					i--;
-					audio.PlayOneShot(audio.clip);
+					ShatterBoxSound.Instance.playSound();
 				}
 			}
 		}
