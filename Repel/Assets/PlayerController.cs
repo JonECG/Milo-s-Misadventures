@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour {
 	public static bool hasCheck = false;
 	public static Vector3 startPosition;
 	
+	
+	public float hSpeedComponent = 5.0f;
 	public float hSpeed;
 	public float vSpeed;
 	public bool inAir;
@@ -37,6 +39,8 @@ public class PlayerController : MonoBehaviour {
 	string restartText = "Restart";
 	GUIContent mainMenuContect = new GUIContent();
 	string mainMenuText = "MainMenu";
+	
+	ShockwaveController shock;
 
 	// Use this for initialization
 	void Start () {
@@ -60,6 +64,8 @@ public class PlayerController : MonoBehaviour {
 				transform.position = new Vector3( startPosition.x, startPosition.y, startPosition.z );
 				actualPosition = transform.position;
 			}
+			
+			shock = GameObject.Find( "ShockwaveEffect" ).GetComponent<ShockwaveController>();
 			
 			startGame = true;
 			vSpeed = 0;
@@ -170,7 +176,7 @@ public class PlayerController : MonoBehaviour {
 		
 	
 				
-		if( ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
+		if( lastEnergy != null && ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
 		{
 			tutWait = false;
 			GetComponent<TutorialView>().unshow();
@@ -187,6 +193,7 @@ public class PlayerController : MonoBehaviour {
 			{
 				case Direction.UP:
 					PlayerSoundScript.Instance.playJump();
+					shock.DisplayShockwave( new Vector3( 0, -1, 0 ), 0.2f );
 					if (aboveFan && belowFan)
 					{
 						vSpeed = 10;
@@ -213,6 +220,7 @@ public class PlayerController : MonoBehaviour {
 						if (!inAir)
 						{
 							PlayerSoundScript.Instance.playSuperJump();
+							shock.DisplayShockwave( new Vector3( 1, 12, 0 ), 1 );
 							if (aboveFan && belowFan)
 							{
 								vSpeed = 14;
@@ -236,6 +244,7 @@ public class PlayerController : MonoBehaviour {
 						else
 						{
 							PlayerSoundScript.Instance.playDive();
+							shock.DisplayShockwave( new Vector3( 1, -10, 0 ), 1 );
 							if (aboveFan && belowFan || inAir)
 							{
 								vSpeed = -15;
@@ -260,6 +269,7 @@ public class PlayerController : MonoBehaviour {
 					else
 					{
 						PlayerSoundScript.Instance.playSuperJump();
+						shock.DisplayShockwave( new Vector3( 1, 12, 0 ), 1 );
 						if (aboveFan)
 						{
 							vSpeed = 20;
@@ -283,10 +293,12 @@ public class PlayerController : MonoBehaviour {
 					break;
 				case Direction.LEFT:
 					PlayerSoundScript.Instance.playStop();
+					shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.2f );
 					hSpeed = 0;
 					break;
 				case Direction.RIGHT:
 					PlayerSoundScript.Instance.playDash();
+					shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.8f );
 					hSpeed = 3;
 					if (aboveFan)
 					{
@@ -309,7 +321,7 @@ public class PlayerController : MonoBehaviour {
 		if( !tutWait )
 		{
 			airTime+=Time.deltaTime;
-			off = new Vector3( 5.0f*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
+			off = new Vector3( hSpeedComponent*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
 			transform.position = transform.position + off;
 			actualPosition += off;
 			

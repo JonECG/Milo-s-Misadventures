@@ -85,6 +85,10 @@ public class SlopeController : MonoBehaviour {
 							{
 								Destroy( slop.gameObject );
 								slopes.RemoveAt( i );
+								GameObject obj = Instantiate( Resources.Load<GameObject>( "ExplosionParticleEffect" ) ) as GameObject;
+								obj.transform.position = slop.transform.position;
+								obj.GetComponent<ParticleSystem>().Play();
+								audio.PlayOneShot(audio.clip);
 								i--;
 							}
 							else
@@ -98,6 +102,10 @@ public class SlopeController : MonoBehaviour {
 							{
 								Destroy( slop.gameObject );
 								slopes.RemoveAt( i );
+								GameObject obj = Instantiate( Resources.Load<GameObject>( "ExplosionParticleEffect" ) ) as GameObject;
+								obj.transform.position = slop.transform.position;
+								obj.GetComponent<ParticleSystem>().Play();
+								audio.PlayOneShot(audio.clip);
 								i--;
 							}
 							else

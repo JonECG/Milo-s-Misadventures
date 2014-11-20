@@ -33,6 +33,9 @@ public class ShatterBoxController : MonoBehaviour {
 				{
 					((GameObject)shatters[i]).SetActive( false );
 					shatters.RemoveAt(i);
+					GameObject obj = Instantiate( Resources.Load<GameObject>( "ExplosionParticleEffect" ) ) as GameObject;
+					obj.transform.position = transform.position;
+					obj.GetComponent<ParticleSystem>().Play();
 					i--;
 					audio.PlayOneShot(audio.clip);
 				}
