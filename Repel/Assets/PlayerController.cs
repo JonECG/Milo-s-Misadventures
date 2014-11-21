@@ -42,8 +42,18 @@ public class PlayerController : MonoBehaviour {
 	
 	ShockwaveController shock;
 
+	int buttonColumns = 5;
+	int buttonRows = 5;
+	int buttonWidth;
+	int buttonHeight;
+
+
 	// Use this for initialization
 	void Start () {
+
+		buttonHeight = Screen.height / buttonRows;
+		buttonWidth = Screen.width / buttonColumns;
+
 		int i;
 		if( !MainMenuController.hasVisitedMainMenu )
 		{
@@ -376,11 +386,11 @@ public class PlayerController : MonoBehaviour {
 		GUI.skin.button.active.background = buttonImage;
 
 
-		if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), restartContect))
+		if (GUI.Button(new Rect(10,Screen.height -buttonHeight , buttonWidth, buttonHeight), restartContect))
         {
             loadLevel();
         }
-		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), mainMenuContect))
+		if (GUI.Button(new Rect(10+buttonWidth,Screen.height -buttonHeight , buttonWidth, buttonHeight), mainMenuContect))
 		{
 			ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
 		}
