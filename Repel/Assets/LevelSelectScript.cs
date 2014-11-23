@@ -18,6 +18,8 @@ public class LevelSelectScript : MonoBehaviour {
 	public Texture unlockedTex;
 	float totalDis=0.0f;
 
+	int numCols = 3;
+
 	int currentButtonCount= 0 ; 
 	int currLevel =0;
 	public Texture2D buttonImage;
@@ -82,10 +84,11 @@ public class LevelSelectScript : MonoBehaviour {
 			currentButtonCount=num;
 		}
 
-		bool worked = customButton (1.5f * num, 1.5f, ""+num+") "+text);
+		bool worked = customButton ( 1.5f*(((num-1)/numCols)),1.5f * (((num-1)%numCols)), ""+num+") "+text);
 		if(worked)
 		{
 		LevelNumberHolder.currentLevel = num+1;
+		PlayerController.timesDied=0; 
 		}
 
 		return worked;
@@ -97,18 +100,15 @@ public class LevelSelectScript : MonoBehaviour {
 		if (num > currentButtonCount) {
 			currentButtonCount=num;
 		}
+	
+		bool worked = customButtonLock (  1.5f * (((num-1)/numCols)),1.5f*(((num-1)%numCols)),""+num+") "+text,!locked);
 
-		if (locked) {
-			bool stopHere=false;
-				}
-		else{
-			bool stopHere = false;
-		}
 
-		bool worked = customButtonLock (1.5f * num, 1.5f, ""+num+") "+text,!locked);
 		if(worked)
 		{
 		LevelNumberHolder.currentLevel = num+1;
+		PlayerController.timesDied=0; 
+			
 		}
 
 		
@@ -123,15 +123,16 @@ public class LevelSelectScript : MonoBehaviour {
 
 	bool customButtonLock (float row, float column, string text, bool locked)
 	{
+		bool ret = (GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text) && (!locked));
 		if (locked)
 		{
-			GUI.DrawTexture(new Rect(buttonWidth*(column-1),buttonHeight*row + totalDis,buttonHeight,buttonHeight), lockedTex, ScaleMode.ScaleToFit, true);
+			GUI.DrawTexture(new Rect(buttonWidth*(column)+buttonWidth*4/5,buttonHeight*row + totalDis,buttonHeight,buttonHeight), lockedTex, ScaleMode.ScaleToFit, true);
 		}
 		else
 		{
-			GUI.DrawTexture(new Rect(buttonWidth*(column-1),buttonHeight*row + totalDis,buttonHeight,buttonHeight), unlockedTex, ScaleMode.ScaleToFit, true);
+			GUI.DrawTexture(new Rect(buttonWidth*(column)+buttonWidth*4/5,buttonHeight*row + totalDis,buttonHeight,buttonHeight), unlockedTex, ScaleMode.ScaleToFit, true);
 		}
-		return (GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text) && (!locked));
+		return ret;
 	}
 	
 	void lockButtonHelper( int position, string buttonName, string levelName )

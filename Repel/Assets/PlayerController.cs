@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour {
 
 	float hSpeedLastTouch;
 	float vSpeedLastTouch;
+
+	public GameObject deathParticle;
 	
 	public Vector3 actualPosition;
 	public float timeInTween;
@@ -24,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public static bool hasCheck = false;
 	public static Vector3 startPosition;
+	public static int timesDied = 0; 
 	
 	
 	public float hSpeedComponent = 5.0f;
@@ -39,21 +42,14 @@ public class PlayerController : MonoBehaviour {
 	string restartText = "Restart";
 	GUIContent mainMenuContect = new GUIContent();
 	string mainMenuText = "MainMenu";
+	private bool levelDone =false;
 	
 	ShockwaveController shock;
 
-	int buttonColumns = 5;
-	int buttonRows = 5;
-	int buttonWidth;
-	int buttonHeight;
-
-
 	// Use this for initialization
 	void Start () {
-
-		buttonHeight = Screen.height / buttonRows;
-		buttonWidth = Screen.width / buttonColumns;
-
+		dying = false;
+		deathTimer = 0.0f;
 		int i;
 		if( !MainMenuController.hasVisitedMainMenu )
 		{
@@ -119,24 +115,73 @@ public class PlayerController : MonoBehaviour {
 			audio.PlayOneShot(swipeSound,3.0f);
 			Debug.Log( s.direction );
 		}
+		if(tutWait&&levelDone)
+		{
+			loadSelector();
+		}
 	}
-	
+
+	bool dying =false;
 	public void Die()
 	{
+		hSpeed = 0;
+		this.gameObject.renderer.enabled = false;
 		PlayerSoundScript.Instance.playEnterDeath();
-		loadLevel();
+
+		GameObject g = (Instantiate (deathParticle, this.gameObject.transform.position, new Quaternion ()) as GameObject);
+		g.GetComponent<ParticleSystem> ().Play();
+
+		if (!dying) {
+			timesDied++;
+			dying = true;
+				}
+
+
+
+
+		//yield return new WaitForSeconds (1.0f);
+
 		//Application.LoadLevel( Application.loadedLevel );
 	}
 
 
+	public void completeLevel()
+	{
+		levelDone = true;
+		tutWait = true;
+		string timey = "";
+		if (timesDied != 1) {
+			timey+="s";
+				}
+		string ender = "Congratulations! You won!\nYou died " + timesDied+" time"+timey+"!\n Swipe right to return to level select."; 
+		GetComponent<TutorialView>().show( Direction.RIGHT, ender );
+	}
+
+	public void loadSelector()
+	{
+
+		ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
+	}
+
     public void loadLevel()
     {
-		ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
+        Application.LoadLevel(Application.loadedLevel);
     }
-	
+
+	float deathTimer = 0.0f;
 	// Update is called once per frame
 	void Update () {
 		bool hadTouched = !inAir;
+	
+
+		if (dying) {
+			deathTimer+=Time.deltaTime;
+			if(deathTimer>0.5)
+			{
+				ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
+			}
+
+				}
 
 
 	
@@ -354,7 +399,7 @@ public class PlayerController : MonoBehaviour {
 				hSpeed -= Mathf.Min( hSpeed - 1, 1.8f*Time.deltaTime );
 			if (transform.position.y < -10 )
 			{
-				Die();
+				Application.LoadLevel( Application.loadedLevel );
 			}
 		}
 		if (!tutWait) {
@@ -386,13 +431,13 @@ public class PlayerController : MonoBehaviour {
 		GUI.skin.button.active.background = buttonImage;
 
 
-		if (GUI.Button(new Rect(10,Screen.height -buttonHeight , buttonWidth, buttonHeight), restartContect))
+		if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), restartContect))
         {
             loadLevel();
         }
-		if (GUI.Button(new Rect(10+buttonWidth,Screen.height -buttonHeight , buttonWidth, buttonHeight), mainMenuContect))
+		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), mainMenuContect))
 		{
-			ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
+			Application.LoadLevel( "LevelSelect" );
 		}
     }
 }
