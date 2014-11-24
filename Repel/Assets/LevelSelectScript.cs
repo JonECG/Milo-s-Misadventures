@@ -71,9 +71,9 @@ public class LevelSelectScript : MonoBehaviour {
 		//startPos = newPos;
 		text.gameObject.SetActive(false);
 
-		if (totalDis > Screen.height / 8.0f) {
-			yDisplacement-=totalDis-(Screen.height/8.0f);
-			totalDis = Screen.height /8.0f;
+		if (totalDis > Screen.height / 3.5f) {
+			yDisplacement-=totalDis-(Screen.height/3.5f);
+			totalDis = Screen.height /3.5f;
 		}
 		else if (totalDis + ((currentButtonCount*1.5f)*buttonHeight) < Screen.height*2.0f / 3.0f) {
 			yDisplacement-= (totalDis-((Screen.height*2.0f/3.0f)-(currentButtonCount*1.5f*buttonHeight)));
@@ -92,7 +92,7 @@ public class LevelSelectScript : MonoBehaviour {
 			currentButtonCount=num;
 		}
 
-		bool worked = customButton ( 1.5f*(((num-1)/numCols)),1.5f * (((num-1)%numCols)), ""+num+") "+text);
+		bool worked = customButton ( 1.5f*(((num-1)/numCols)), 0.25f + 1.25f*(((num-1)%numCols)), ""+num+") "+text);
 		if(worked)
 		{
 		LevelNumberHolder.currentLevel = num+1;
@@ -109,7 +109,7 @@ public class LevelSelectScript : MonoBehaviour {
 			currentButtonCount=num;
 		}
 	
-		bool worked = customButtonLock (  1.5f * (((num-1)/numCols)),1.5f*(((num-1)%numCols)),""+num+") "+text,!locked);
+		bool worked = customButtonLock (  1.5f * (((num-1)/numCols)), 0.25f + 1.25f*(((num-1)%numCols)),""+num+") "+text,!locked);
 
 
 		if(worked)
