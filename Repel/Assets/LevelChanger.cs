@@ -12,22 +12,8 @@ public class LevelChanger : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetMouseButton(0)) {
-			RaycastHit hit = new RaycastHit ();
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			if (Physics.Raycast (ray, out hit, 200)) {
-				resolveCollision (hit);
-			}
-		}
-	}
-
-	private void resolveCollision(RaycastHit hit)
-	{
-		if (hit.collider==this.gameObject.collider) {
 			ScreenTransitioner.Instance.TransitionTo(toLoad);
 		}
-		
 	}
-
-
 
 }

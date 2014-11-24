@@ -66,7 +66,7 @@ public class SlopeController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if( player != null )
 		for( int i = 0; i < slopes.Count; i++ )
 		{
 			SlopeScript slop = ((GameObject)slopes[i]).GetComponent<SlopeScript>();

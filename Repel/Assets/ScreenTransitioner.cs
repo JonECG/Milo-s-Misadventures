@@ -53,6 +53,7 @@ public class ScreenTransitioner : MonoBehaviour {
 	
 	void OnGUI()
 	{
+		GUI.depth = -1000;
 		float show = Mathf.Clamp( progress, 0, 1 );
 		GL.PushMatrix();
 		GL.LoadOrtho();
