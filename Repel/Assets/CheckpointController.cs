@@ -46,7 +46,7 @@ public class CheckpointController : MonoBehaviour {
 																audio.PlayOneShot (hitCheckpointSound);
 														}
 												}
-												((GameObject)checkpoints [i]).renderer.material.color = new Color (0.5f, 1, 0);
+												//((GameObject)checkpoints [i]).renderer.material.color = new Color (0.5f, 1, 0);
 												PlayerController.startPosition = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
 												PlayerController.hasCheck = true;
 										}
