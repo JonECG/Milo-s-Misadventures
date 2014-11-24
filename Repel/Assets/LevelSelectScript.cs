@@ -17,6 +17,9 @@ public class LevelSelectScript : MonoBehaviour {
 	public Texture lockedTex;
 	public Texture unlockedTex;
 	float totalDis=0.0f;
+	
+	private float time;
+	public Texture2D header;
 
 	int numCols = 3;
 
@@ -24,12 +27,16 @@ public class LevelSelectScript : MonoBehaviour {
 	int currLevel =0;
 	public Texture2D buttonImage;
 
+	private Camera cam;
 	// Use this for initialization
 	void Start () 
 	{
 		yDisplacement = 0.0f;
 		//totalDis = -30;
 		text = GameObject.Find ("Title");
+		time = 0;
+		
+		cam = Camera.main;
 		
 		startPos = text.transform.position;
 	}
@@ -37,7 +44,8 @@ public class LevelSelectScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-
+		time += Time.deltaTime;
+		cam.transform.position = new Vector3( cam.transform.position.x, yDisplacement/200 , cam.transform.position.z );
 
 		currLevel = PlayerPrefs.GetInt ("LevelBeat");
 		
@@ -185,6 +193,19 @@ public class LevelSelectScript : MonoBehaviour {
 		lockButtonHelper( place++, "Dash up", "TalanDash" );
 		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
 		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
+		
+		
+		Matrix4x4 matrixBackup = GUI.matrix;
+		
+		float titleWidth = Screen.width* ( 0.45f + Mathf.Sin( time ) * 0.02f );
+		float titleHeight = titleWidth / (682/((float)148));
+		float titleX = Screen.width/2;
+		float titleY = Screen.height * ( 0.1f + Mathf.Sin( time ) * 0.01f );
+		
+		GUIUtility.RotateAroundPivot( Mathf.Sin( time / 2 ) * 5, new Vector2(titleX,titleY));
+		GUI.DrawTexture( new Rect( titleX - titleWidth/2, titleY - titleHeight/2, titleWidth, titleHeight ), header );
+		
+		GUI.matrix = matrixBackup;
 
 	}
 }
