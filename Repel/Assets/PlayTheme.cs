@@ -3,10 +3,19 @@ using System.Collections;
 
 public class PlayTheme : MonoBehaviour {
 
-	public AudioClip theme;
+	public AudioClip nextMusic;
+
+	public float fadeTime = 0.3f;
+	
+	bool isPlaying = false;
+	bool isTransitioning = false;
+	bool fadingOut;
 
 	private static PlayTheme instance = null;
-	public static PlayTheme Instance {
+	
+	private float transitioningTime;
+	public static PlayTheme Instance 
+	{
 		get { return instance; }
 	}
 	void Awake() {
@@ -18,20 +27,92 @@ public class PlayTheme : MonoBehaviour {
 		}
 		DontDestroyOnLoad(this.gameObject);
 	}
-
-
-
-	// Use this for initialization
-	void Start () {
-		audio.loop = true;
-		audio.Play ();
-
+	
+	public void TransitionPlay( AudioClip music )
+	{
+		if( !isTransitioning )
+		{			
+			if( music != null )
+			{
+				if( !isPlaying )
+				{
+					audio.clip = music;
+					isPlaying = true;
+					audio.loop = true;
+					audio.volume = 1;
+					audio.Play();
+					audio.time = 0;
+				}
+				else
+				if( music != audio.clip )
+				{
+					isTransitioning = true;
+					fadingOut = true;
+					transitioningTime = 0;
+					nextMusic = music;
+				}
+			}
+		}
+	}
+		
+	public void TransitionPlay( string name )
+	{
+		if( !isTransitioning )
+		{
+			AudioClip loaded = Resources.Load<AudioClip>( name );
+			
+			TransitionPlay( loaded );
+		}
+	}
+	
+	public void TransitionStop()
+	{
 	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if( isTransitioning )
+		{
+			transitioningTime += Time.deltaTime;
+			
+			if( fadingOut )
+			{
+				audio.volume = Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 );
+			}
+			else
+			{
+				audio.volume = 1-Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 );
+			}
+			
+			if( transitioningTime > fadeTime )
+			{
+				if( fadingOut )
+				{
+					if( nextMusic != null )
+					{
+						audio.Stop();
+						audio.clip = nextMusic;
+						audio.time = 0;
+						audio.Play();
+						nextMusic = null;
+						fadingOut = false;
+					}
+					else
+					{
+						audio.Stop();
+						isPlaying = false;
+						isTransitioning = false;
+					}
+				}
+				else
+				{
+					isTransitioning = false;
+				}
+				
+				transitioningTime = 0;
+			}
+		}
 	}
 
 
