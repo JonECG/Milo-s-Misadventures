@@ -6,9 +6,11 @@ public class ScreenTransitioner : MonoBehaviour {
 	public static ScreenTransitioner Instance;
 	
 	private string target;
-	private float progress;
+	private float progress, nextProgress;
 	
 	public float rate = 1;
+	
+	bool ignoreFirst;
 	
 	public Material transitionMaterial = null;
 	
@@ -17,6 +19,7 @@ public class ScreenTransitioner : MonoBehaviour {
 	void Start () {
 		Instance = this;
 		progress = 0;
+		ignoreFirst = true;
 		target = null;
 		
 		if( transitionMaterial == null )
@@ -28,19 +31,28 @@ public class ScreenTransitioner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if( Input.GetKeyDown( KeyCode.A ) )
-		{
-			TransitionTo( Application.loadedLevelName );
-		}
 	
-		if( target == null )
-			progress = Mathf.Min( 1, progress + rate * Time.deltaTime );
-		else
-			progress -= rate * Time.deltaTime;
+		if( !ignoreFirst )
+		{
+			if( target == null )
+				progress = Mathf.Min( 1, progress + rate * ( Mathf.Min( 1/((float)60), Time.deltaTime ) ) );
+			else
+				progress -= rate * Time.deltaTime;
+		}
+		
+		ignoreFirst = false;
 			
 		if( target != null && progress < 0 )
 		{
-			Application.LoadLevel( target );
+			if( target == "EXIT" )
+			{
+				#if UNITY_EDITOR
+					UnityEditor.EditorApplication.isPlaying = false;
+				#endif
+				Application.Quit();
+			}
+			else
+				Application.LoadLevel( target );
 		}
 		
 	}

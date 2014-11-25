@@ -15,17 +15,11 @@ public class HardwareButtonRouter : MonoBehaviour {
 	void Update () {
 		if( Input.GetKey( KeyCode.Escape ) )
 		{
-			if( backButtonDestination == "EXIT" )
-				Application.Quit();
-			else
-				Application.LoadLevel( backButtonDestination );
+			ScreenTransitioner.Instance.TransitionTo( backButtonDestination );
 		}
 		if( Input.GetKey( KeyCode.Home ) )
 		{
-			if( homeButtonDestination == "EXIT" )
-				Application.Quit();
-			else
-				Application.LoadLevel( homeButtonDestination );
+			ScreenTransitioner.Instance.TransitionTo( homeButtonDestination );
 		}
 	}
 }

@@ -16,6 +16,8 @@ public class TutorialView : MonoBehaviour {
 	
 	private Vector2 start, end;
 	
+	GUIStyle centeredStyle;
+	
 	// Use this for initialization
 	void Start () {
 	}
@@ -99,9 +101,13 @@ public class TutorialView : MonoBehaviour {
 	int lastPhase = 0;
 	void OnGUI()
 	{
-		var centeredStyle = new GUIStyle( GUI.skin.label );
-		centeredStyle.alignment = TextAnchor.UpperCenter;
-		centeredStyle.fontSize = 32;
+		if( centeredStyle == null )
+		{
+			centeredStyle = new GUIStyle( GUI.skin.label );
+			centeredStyle.alignment = TextAnchor.UpperCenter;
+			centeredStyle.fontSize = 36;
+			centeredStyle.font = Resources.Load<Font>( "UIFontRingBearer" );
+		}
 		GUIDrawRect( new Rect(0,0,Screen.width,Screen.height), new Color( 0,0,0, shadeAmount * maxShadeAmount ) );
 		
 		if( visible )

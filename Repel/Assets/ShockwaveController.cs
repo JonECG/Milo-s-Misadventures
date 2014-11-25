@@ -8,6 +8,9 @@ public class ShockwaveController : MonoBehaviour {
 	float aliveTime;
 	float currentTime;
 	bool shouldPlay;
+	
+	float percent = 0.3f;
+	
 	// Use this for initialization
 	void Start () {
 		part = transform.FindChild( "ShockwaveParticleSystem" ).gameObject.GetComponent<ParticleSystem>();
@@ -21,7 +24,7 @@ public class ShockwaveController : MonoBehaviour {
 	void Update () {
 		if( shouldPlay )
 		{
-			float percent = 0.3f;
+			
 			float scale = 6 * (Mathf.Clamp( currentTime / ( aliveTime * percent * 0.5f ) , 0, 1 )) * (1-Mathf.Clamp( ( currentTime - aliveTime*(1-percent) ) / ( aliveTime * percent ) , 0, 1 ));
 			transform.localScale = new Vector3( scale, scale, scale );
 			currentTime += Time.deltaTime;
@@ -41,5 +44,10 @@ public class ShockwaveController : MonoBehaviour {
 		shouldPlay = true;
 		transform.rotation = Quaternion.LookRotation( direction );
 		part.enableEmission = true;
+	}
+	
+	public void KillShockwave()
+	{
+		currentTime = Mathf.Max( currentTime, aliveTime * ( 1 - percent ) );
 	}
 }

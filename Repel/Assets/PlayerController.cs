@@ -95,7 +95,11 @@ public class PlayerController : MonoBehaviour {
 	
 	void tapResponse( Touch t )
 	{
-		if( startGame && tutWait )
+		if( levelDone )
+		{
+			loadSelector();
+		}
+		if( startGame && tutWait && !levelDone )
 		{
 			Debug.Log( "Touched" );
 			tutWait = false;
@@ -107,7 +111,7 @@ public class PlayerController : MonoBehaviour {
 	void swipeResponse( Swipe s )
 	{
 		tapResponse( new Touch() );
-		if( !startGame )
+		if( !startGame && !levelDone )
 		{
 			Debug.Log( "Swiped" );
 			lastSwipe = s;
@@ -115,26 +119,29 @@ public class PlayerController : MonoBehaviour {
 			audio.PlayOneShot(swipeSound,3.0f);
 			Debug.Log( s.direction );
 		}
-		if(tutWait&&levelDone)
-		{
-			loadSelector();
-		}
 	}
 
 	bool dying =false;
 	public void Die()
 	{
-		hSpeed = 0;
-		this.gameObject.renderer.enabled = false;
-		PlayerSoundScript.Instance.playEnterDeath();
-
-		GameObject g = (Instantiate (deathParticle, this.gameObject.transform.position, new Quaternion ()) as GameObject);
-		g.GetComponent<ParticleSystem> ().Play();
-
-		if (!dying) {
+		if (!dying) 
+		{
+			hSpeed = 0;
+			vSpeed = 0;
+			this.gameObject.renderer.enabled = false;
+			
+			GameObject.Find( "default" ).renderer.enabled = false;
+			shock.KillShockwave();
+			
+			PlayerSoundScript.Instance.playEnterDeath();
+	
+			GameObject g = (Instantiate (deathParticle, this.gameObject.transform.position, new Quaternion ()) as GameObject);
+			g.GetComponent<ParticleSystem> ().Play();
+	
 			timesDied++;
 			dying = true;
-				}
+				
+		}
 
 
 
@@ -153,19 +160,19 @@ public class PlayerController : MonoBehaviour {
 		if (timesDied != 1) {
 			timey+="s";
 				}
-		string ender = "Congratulations! You won!\nYou died " + timesDied+" time"+timey+"!\n Swipe right to return to level select."; 
-		GetComponent<TutorialView>().show( Direction.RIGHT, ender );
+		string ender = "Congratulations! You won!\nYou died " + timesDied+" time"+timey+"!\n Tap to return back to the level select."; 
+		GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), ender );
+		//GetComponent<TutorialView>().show( new Vector2( 0.75f, 0.75f ), new Vector2( 0.75f, 0.75f ), "Tap to begin" );
 	}
 
 	public void loadSelector()
 	{
-
 		ScreenTransitioner.Instance.TransitionTo( "LevelSelect" );
 	}
 
     public void loadLevel()
     {
-        Application.LoadLevel(Application.loadedLevel);
+		ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
     }
 
 	float deathTimer = 0.0f;
@@ -181,107 +188,149 @@ public class PlayerController : MonoBehaviour {
 				ScreenTransitioner.Instance.TransitionTo( Application.loadedLevelName );
 			}
 
-				}
-
-
-	
-	
-	
-		ArrayList en = GameObject.Find( "LevelController" ).GetComponent<LevelController>().energies;
-		for( int i = 0; i < en.Count; i++ )
-		{
-			EnergyController energ = ((GameObject)en[i]).GetComponent<EnergyController>();
-			
-			if( energ.gameObject.activeSelf )
-			{
-				float dist = (transform.position - energ.transform.position).sqrMagnitude;
-				if( dist > energ.lastDistance && dist < 0.5 )
-				{
-					lastEnergyTime = Time.time;
-					lastEnergy = energ;
-					vSpeedLastTouch = vSpeed;
-					hSpeedLastTouch = hSpeed;
-					energ.touched = true;
-					touchEnergy( ((GameObject)en[i]) );
-				}
-				energ.lastDistance = dist;
-			}
 		}
-
-		aboveFan = false;
-		belowFan = false;
-		ArrayList fans = GameObject.Find( "LevelController" ).GetComponent<LevelController>().fans;
-		for( int i = 0; i < fans.Count; i++ )
+		else
 		{
-			if (transform.position.x > ((GameObject)fans[i]).transform.position.x-2)
-			{
-				if (transform.position.x < ((GameObject)fans[i]).transform.position.x+2)
-				{
-					if (transform.position.y >= ((GameObject)fans[i]).transform.position.y)
-					{
-						aboveFan = true;
-					}
-					else
-					{
-						belowFan = true;
-					}
-				}
-			}
-		}
-		
 	
+			ArrayList en = GameObject.Find( "LevelController" ).GetComponent<LevelController>().energies;
+			for( int i = 0; i < en.Count; i++ )
+			{
+				EnergyController energ = ((GameObject)en[i]).GetComponent<EnergyController>();
 				
-		if( lastEnergy != null && ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
-		{
-			tutWait = false;
-			GetComponent<TutorialView>().unshow();
-			
-			lastEnergyTime = -50;
-			lastSwipeTime = -50;
-			timeInTween = 0;
-			actualPosition = lastEnergy.transform.position;
-			hSpeed = hSpeedLastTouch;
-			vSpeed = vSpeedLastTouch;
-			transform.FindChild("particle").GetComponent<ParticleSystem>().Play();
-			
-			switch( lastSwipe.direction )
+				if( energ.gameObject.activeSelf )
+				{
+					float dist = (transform.position - energ.transform.position).sqrMagnitude;
+					if( dist > energ.lastDistance && dist < 0.5 )
+					{
+						lastEnergyTime = Time.time;
+						lastEnergy = energ;
+						vSpeedLastTouch = vSpeed;
+						hSpeedLastTouch = hSpeed;
+						energ.touched = true;
+						touchEnergy( ((GameObject)en[i]) );
+					}
+					energ.lastDistance = dist;
+				}
+			}
+	
+			aboveFan = false;
+			belowFan = false;
+			ArrayList fans = GameObject.Find( "LevelController" ).GetComponent<LevelController>().fans;
+			for( int i = 0; i < fans.Count; i++ )
 			{
-				case Direction.UP:
-					PlayerSoundScript.Instance.playJump();
-					shock.DisplayShockwave( new Vector3( 0, -1, 0 ), 0.2f );
-					if (aboveFan && belowFan)
+				if (transform.position.x > ((GameObject)fans[i]).transform.position.x-2)
+				{
+					if (transform.position.x < ((GameObject)fans[i]).transform.position.x+2)
 					{
-						vSpeed = 10;
+						if (transform.position.y >= ((GameObject)fans[i]).transform.position.y)
+						{
+							aboveFan = true;
+						}
+						else
+						{
+							belowFan = true;
+						}
 					}
-					else
-					if (aboveFan)
-					{
-						vSpeed = 15;
-					}
-					else
-					if (belowFan)
-					{
-						vSpeed = 6;
-					}
-					else
-					{
-						vSpeed = 10;
-					}
-					inAir = true;
-					break;
-				case Direction.DOWN:
-					if( airTime > 0.5)
-					{
-						if (!inAir)
+				}
+			}
+			
+		
+					
+			if( lastEnergy != null && ( (tutWait && Time.time > lastEnergyTime + 1.5f ) || ( !tutWait && Time.time - lastEnergyTime < mercyTime ) ) && Time.time - lastSwipeTime < mercyTime*2 )
+			{
+				tutWait = false;
+				GetComponent<TutorialView>().unshow();
+				
+				lastEnergyTime = -50;
+				lastSwipeTime = -50;
+				timeInTween = 0;
+				actualPosition = lastEnergy.transform.position;
+				hSpeed = hSpeedLastTouch;
+				vSpeed = vSpeedLastTouch;
+				transform.FindChild("particle").GetComponent<ParticleSystem>().Play();
+				
+				switch( lastSwipe.direction )
+				{
+					case Direction.UP:
+						PlayerSoundScript.Instance.playJump();
+						shock.DisplayShockwave( new Vector3( 0, -1, 0 ), 0.2f );
+						if (aboveFan && belowFan)
+						{
+							vSpeed = 10;
+						}
+						else
+						if (aboveFan)
+						{
+							vSpeed = 15;
+						}
+						else
+						if (belowFan)
+						{
+							vSpeed = 6;
+						}
+						else
+						{
+							vSpeed = 10;
+						}
+						inAir = true;
+						break;
+					case Direction.DOWN:
+						if( airTime > 0.5)
+						{
+							if (!inAir)
+							{
+								PlayerSoundScript.Instance.playSuperJump();
+								shock.DisplayShockwave( new Vector3( 1, 12, 0 ), 1 );
+								if (aboveFan && belowFan)
+								{
+									vSpeed = 14;
+								}
+								else
+									if (aboveFan)
+								{
+									vSpeed = 20;
+								}
+								else
+									if (belowFan)
+								{
+									vSpeed = 10;
+								}
+								else
+								{
+									vSpeed = 14;
+								}
+								hSpeed = 1;
+							}
+							else
+							{
+								PlayerSoundScript.Instance.playDive();
+								shock.DisplayShockwave( new Vector3( 1, -10, 0 ), 1 );
+								if (aboveFan && belowFan || inAir)
+								{
+									vSpeed = -15;
+								}
+								else
+									if (aboveFan)
+								{
+									vSpeed = -10;
+								}
+								else
+									if (belowFan)
+								{
+									vSpeed = -20;
+								}
+								else
+								{
+									vSpeed = -15;
+								}
+								hSpeed = 1;
+							}
+						}
+						else
 						{
 							PlayerSoundScript.Instance.playSuperJump();
 							shock.DisplayShockwave( new Vector3( 1, 12, 0 ), 1 );
-							if (aboveFan && belowFan)
-							{
-								vSpeed = 14;
-							}
-							else
-								if (aboveFan)
+							if (aboveFan)
 							{
 								vSpeed = 20;
 							}
@@ -295,115 +344,72 @@ public class PlayerController : MonoBehaviour {
 								vSpeed = 14;
 							}
 							hSpeed = 1;
+							inAir = true;
+							airTime = 20;
+							hSpeed = 0.25f;
+							
+							
 						}
-						else
-						{
-							PlayerSoundScript.Instance.playDive();
-							shock.DisplayShockwave( new Vector3( 1, -10, 0 ), 1 );
-							if (aboveFan && belowFan || inAir)
-							{
-								vSpeed = -15;
-							}
-							else
-								if (aboveFan)
-							{
-								vSpeed = -10;
-							}
-							else
-								if (belowFan)
-							{
-								vSpeed = -20;
-							}
-							else
-							{
-								vSpeed = -15;
-							}
-							hSpeed = 1;
-						}
-					}
-					else
-					{
-						PlayerSoundScript.Instance.playSuperJump();
-						shock.DisplayShockwave( new Vector3( 1, 12, 0 ), 1 );
+						break;
+					case Direction.LEFT:
+						PlayerSoundScript.Instance.playStop();
+						shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.2f );
+						hSpeed = 0;
+						break;
+					case Direction.RIGHT:
+						PlayerSoundScript.Instance.playDash();
+						shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.8f );
+						hSpeed = 3;
 						if (aboveFan)
 						{
-							vSpeed = 20;
+							vSpeed = 2;
 						}
 						else
-							if (belowFan)
+						if (belowFan)
 						{
-							vSpeed = 10;
+							vSpeed = -2;
 						}
 						else
 						{
-							vSpeed = 14;
+							vSpeed = 0;
 						}
-						hSpeed = 1;
-						inAir = true;
-						airTime = 20;
-						hSpeed = 0.25f;
-						
-						
-					}
-					break;
-				case Direction.LEFT:
-					PlayerSoundScript.Instance.playStop();
-					shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.2f );
-					hSpeed = 0;
-					break;
-				case Direction.RIGHT:
-					PlayerSoundScript.Instance.playDash();
-					shock.DisplayShockwave( new Vector3( 1, 0, 0 ), 0.8f );
-					hSpeed = 3;
-					if (aboveFan)
-					{
-						vSpeed = 2;
-					}
-					else
-					if (belowFan)
-					{
-						vSpeed = -2;
-					}
-					else
-					{
-						vSpeed = 0;
-					}
-					break;
-			}
-			lastEnergy.gameObject.SetActive( false );
-		}
-		
-		if( !tutWait )
-		{
-			airTime+=Time.deltaTime;
-			off = new Vector3( hSpeedComponent*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
-			transform.position = transform.position + off;
-			actualPosition += off;
-			
-			if( timeInTween < compensateTweenTime )
-			{
-				transform.position = transform.position + (actualPosition-transform.position) * timeInTween/compensateTweenTime;
-				timeInTween += Time.deltaTime;
+						break;
+				}
+				lastEnergy.gameObject.SetActive( false );
 			}
 			
-			if( inAir && hSpeed < 2.5 )
+			if( !tutWait )
 			{
-				vSpeed -= 9*Time.deltaTime;
+				airTime+=Time.deltaTime;
+				off = new Vector3( hSpeedComponent*Time.deltaTime*hSpeed, vSpeed*Time.deltaTime, 0 );
+				transform.position = transform.position + off;
+				actualPosition += off;
+				
+				if( timeInTween < compensateTweenTime )
+				{
+					transform.position = transform.position + (actualPosition-transform.position) * timeInTween/compensateTweenTime;
+					timeInTween += Time.deltaTime;
+				}
+				
+				if( inAir && hSpeed < 2.5 )
+				{
+					vSpeed -= 9*Time.deltaTime;
+				}
+				else
+				{
+					if( hSpeed < 1 )
+						hSpeed += Mathf.Min( 1 - hSpeed, 0.7f*Time.deltaTime );
+				}
+				if( hSpeed > 1 )
+					hSpeed -= Mathf.Min( hSpeed - 1, 1.8f*Time.deltaTime );
+				if (transform.position.y < -10 )
+				{
+					Application.LoadLevel( Application.loadedLevel );
+				}
 			}
-			else
-			{
-				if( hSpeed < 1 )
-					hSpeed += Mathf.Min( 1 - hSpeed, 0.7f*Time.deltaTime );
+			if (!tutWait) {
+				inAir = true;
 			}
-			if( hSpeed > 1 )
-				hSpeed -= Mathf.Min( hSpeed - 1, 1.8f*Time.deltaTime );
-			if (transform.position.y < -10 )
-			{
-				Application.LoadLevel( Application.loadedLevel );
-			}
-		}
-		if (!tutWait) {
-			inAir = true;
 		}
 	}
 	
@@ -431,13 +437,13 @@ public class PlayerController : MonoBehaviour {
 		GUI.skin.button.active.background = buttonImage;
 
 
-		if (GUI.Button(new Rect(10,Screen.height -50 , 100, 50), restartContect))
+		if (GUI.Button(new Rect(10,Screen.height -50 , 150, 50), restartContect))
         {
             loadLevel();
         }
-		if (GUI.Button(new Rect(110,Screen.height -50 , 100, 50), mainMenuContect))
+		if (GUI.Button(new Rect(170,Screen.height -50 , 150, 50), mainMenuContect))
 		{
-			Application.LoadLevel( "LevelSelect" );
+			loadSelector();
 		}
     }
 }
