@@ -62,6 +62,7 @@
      <Compile Include="Assets\LevelNumberHolder.cs" />
      <Compile Include="Assets\LevelSelectScript.cs" />
      <Compile Include="Assets\MainMenuController.cs" />
+     <Compile Include="Assets\MusicStarter.cs" />
      <Compile Include="Assets\PlayTheme.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\PlayerSoundScript.cs" />

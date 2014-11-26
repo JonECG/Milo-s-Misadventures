@@ -10,6 +10,6 @@ public class AlwaysRotate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.gameObject.transform.RotateAround (this.gameObject.transform.position, this.gameObject.transform.forward,500.0f*Time.deltaTime);
+		this.gameObject.transform.RotateAround (this.gameObject.transform.position, this.gameObject.transform.up,500.0f*Time.deltaTime);
 	}
 }
