@@ -17,6 +17,9 @@ public class LevelSelectScript : MonoBehaviour {
 	public Texture lockedTex;
 	public Texture unlockedTex;
 	float totalDis=0.0f;
+	
+	private float time;
+	public Texture2D header;
 
 	int numCols = 3;
 
@@ -24,20 +27,28 @@ public class LevelSelectScript : MonoBehaviour {
 	int currLevel =0;
 	public Texture2D buttonImage;
 
+	private Camera cam;
+	
+	private Texture2D black;
 	// Use this for initialization
 	void Start () 
 	{
+		black = new Texture2D(1,1);
+		black.wrapMode = TextureWrapMode.Repeat;
+		black.SetPixel(0,0, new Color( 0,0,0,0.7f ) );
+		black.Apply();
 		yDisplacement = 0.0f;
 		//totalDis = -30;
-		text = GameObject.Find ("Title");
+		time = 0;
 		
-		//startPos = text.transform.position;
+		cam = Camera.main;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-
+		time += Time.deltaTime;
+		cam.transform.position = new Vector3( cam.transform.position.x, yDisplacement/200 , cam.transform.position.z );
 
 		currLevel = PlayerPrefs.GetInt ("LevelBeat");
 		
@@ -61,11 +72,10 @@ public class LevelSelectScript : MonoBehaviour {
 		//text.gameObject.transform.position = newPos;
 		//yDisplacement = 0.0f;
 		//startPos = newPos;
-		text.gameObject.SetActive(false);
 
-		if (totalDis > Screen.height / 8.0f) {
-			yDisplacement-=totalDis-(Screen.height/8.0f);
-			totalDis = Screen.height /8.0f;
+		if (totalDis > Screen.height / 3.5f) {
+			yDisplacement-=totalDis-(Screen.height/3.5f);
+			totalDis = Screen.height /3.5f;
 		}
 		else if (totalDis + ((currentButtonCount*1.5f)*buttonHeight) < Screen.height*2.0f / 3.0f) {
 			yDisplacement-= (totalDis-((Screen.height*2.0f/3.0f)-(currentButtonCount*1.5f*buttonHeight)));
@@ -73,7 +83,7 @@ public class LevelSelectScript : MonoBehaviour {
 		}
 		
 
-		
+
 
 
 	}
@@ -84,7 +94,7 @@ public class LevelSelectScript : MonoBehaviour {
 			currentButtonCount=num;
 		}
 
-		bool worked = customButton ( 1.5f*(((num-1)/numCols)),1.5f * (((num-1)%numCols)), ""+num+") "+text);
+		bool worked = customButton ( 1.5f*(((num-1)/numCols)), 0.25f + 1.25f*(((num-1)%numCols)), text);
 		if(worked)
 		{
 		LevelNumberHolder.currentLevel = num+1;
@@ -101,7 +111,7 @@ public class LevelSelectScript : MonoBehaviour {
 			currentButtonCount=num;
 		}
 	
-		bool worked = customButtonLock (  1.5f * (((num-1)/numCols)),1.5f*(((num-1)%numCols)),""+num+") "+text,!locked);
+		bool worked = customButtonLock (  1.5f * (((num-1)/numCols)), 0.25f + 1.25f*(((num-1)%numCols)), text,!locked);
 
 
 		if(worked)
@@ -126,11 +136,13 @@ public class LevelSelectScript : MonoBehaviour {
 		bool ret = (GUI.Button (new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), text) && (!locked));
 		if (locked)
 		{
+			GUI.DrawTexture( new Rect (buttonWidth*column, buttonHeight*row + totalDis, buttonWidth, buttonHeight), black );
 			GUI.DrawTexture(new Rect(buttonWidth*(column)+buttonWidth*4/5,buttonHeight*row + totalDis,buttonHeight,buttonHeight), lockedTex, ScaleMode.ScaleToFit, true);
+			
 		}
 		else
 		{
-			GUI.DrawTexture(new Rect(buttonWidth*(column)+buttonWidth*4/5,buttonHeight*row + totalDis,buttonHeight,buttonHeight), unlockedTex, ScaleMode.ScaleToFit, true);
+			//GUI.DrawTexture(new Rect(buttonWidth*(column)+buttonWidth*4/5,buttonHeight*row + totalDis,buttonHeight,buttonHeight), unlockedTex, ScaleMode.ScaleToFit, true);
 		}
 		return ret;
 	}
@@ -149,6 +161,7 @@ public class LevelSelectScript : MonoBehaviour {
 		GUI.skin.button.normal.background = buttonImage;
 		GUI.skin.button.hover.background = buttonImage;
 		GUI.skin.button.active.background = buttonImage;
+		GUI.skin.button.font = Resources.Load<Font>( "UIFontRingBearer" );
 
 
 		if(customButton (10, 3, "DebugUnlock"))
@@ -168,6 +181,7 @@ public class LevelSelectScript : MonoBehaviour {
 			//Go to the main menu
 		}
 
+		/*
 		if (checkButton(1, "Tutorial: New Heights")) 
 		{
 			ScreenTransitioner.Instance.TransitionTo( "UpTutorial" );
@@ -185,6 +199,38 @@ public class LevelSelectScript : MonoBehaviour {
 		lockButtonHelper( place++, "Dash up", "TalanDash" );
 		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
 		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
-		GUI.Label (new Rect (Screen.width /2, 10, 500, 100), "THIS IS TEXT");
+		*/
+		
+		if (checkButton(1, "Up and Up")) 
+		{
+			ScreenTransitioner.Instance.TransitionTo( "UpTutorial" );
+		}
+		
+		int place = 2;
+		
+		lockButtonHelper( place++, "Dashing along", "TalansLevel" );
+		lockButtonHelper( place++, "New Heights", "JumpAndDownPractice_1" );
+		lockButtonHelper( place++, "Hold it!", "leftTutorial" );
+		lockButtonHelper( place++, "Closed Spaces", "AJLevel" );
+		lockButtonHelper( place++, "Fanning Out", "AJLevel2" );
+		lockButtonHelper( place++, "Combined Skills", "AJLevel3" );
+		lockButtonHelper( place++, "Forkroads", "ColterMidLevel" );
+		lockButtonHelper( place++, "Dash up", "TalanDash" );
+		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
+		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
+		
+		
+		Matrix4x4 matrixBackup = GUI.matrix;
+		
+		float titleWidth = Screen.width* ( 0.45f + Mathf.Sin( time ) * 0.02f );
+		float titleHeight = titleWidth / (682/((float)148));
+		float titleX = Screen.width/2;
+		float titleY = Screen.height * ( 0.1f + Mathf.Sin( time ) * 0.01f );
+		
+		GUIUtility.RotateAroundPivot( Mathf.Sin( time / 2 ) * 5, new Vector2(titleX,titleY));
+		GUI.DrawTexture( new Rect( titleX - titleWidth/2, titleY - titleHeight/2, titleWidth, titleHeight ), header );
+		
+		GUI.matrix = matrixBackup;
+
 	}
 }
