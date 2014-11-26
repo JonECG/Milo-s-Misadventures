@@ -6,6 +6,7 @@ public class PlayTheme : MonoBehaviour {
 	public AudioClip nextMusic;
 
 	public float fadeTime = 0.3f;
+	public float volumeScale = 0.5f;
 	
 	bool isPlaying = false;
 	bool isTransitioning = false;
@@ -39,7 +40,7 @@ public class PlayTheme : MonoBehaviour {
 					audio.clip = music;
 					isPlaying = true;
 					audio.loop = true;
-					audio.volume = 1;
+					audio.volume = volumeScale;
 					audio.Play();
 					audio.time = 0;
 				}
@@ -78,11 +79,11 @@ public class PlayTheme : MonoBehaviour {
 			
 			if( fadingOut )
 			{
-				audio.volume = Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 );
+				audio.volume = volumeScale * Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 );
 			}
 			else
 			{
-				audio.volume = 1-Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 );
+				audio.volume = volumeScale*(1-Mathf.Clamp( ( fadeTime - transitioningTime ) / fadeTime, 0, 1 ));
 			}
 			
 			if( transitioningTime > fadeTime )
