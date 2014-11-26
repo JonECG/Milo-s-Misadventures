@@ -217,6 +217,7 @@ public class LevelSelectScript : MonoBehaviour {
 		lockButtonHelper( place++, "Forkroads", "ColterMidLevel" );
 		lockButtonHelper( place++, "Dash up", "TalanDash" );
 		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
+		lockButtonHelper( place++, "Shatter Fun", "AJLevel5" );
 		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
 		
 		
