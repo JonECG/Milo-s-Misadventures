@@ -29,6 +29,8 @@ public class LevelSelectScript : MonoBehaviour {
 
 	private Camera cam;
 	
+	public bool showDebugButtons;
+	
 	private Texture2D black;
 	// Use this for initialization
 	void Start () 
@@ -55,10 +57,10 @@ public class LevelSelectScript : MonoBehaviour {
 		buttonWidth = Screen.width/numColumns;
 		buttonHeight = Screen.height/numRows;
 
-		if (!mouseWasDown && Input.GetMouseButton (0)) {
+		if ( showDebugButtons && !mouseWasDown && Input.GetMouseButton (0)) {
 						prevY = Input.mousePosition.y;
 						mouseWasDown=true;
-				} else if (Input.GetMouseButton (0)) {
+		} else if ( showDebugButtons && Input.GetMouseButton (0)) {
 
 			yDisplacement += ((prevY-Input.mousePosition.y));
 			prevY = Input.mousePosition.y;
@@ -72,20 +74,16 @@ public class LevelSelectScript : MonoBehaviour {
 		//text.gameObject.transform.position = newPos;
 		//yDisplacement = 0.0f;
 		//startPos = newPos;
-
-		if (totalDis > Screen.height / 3.5f) {
+		
+		if ( !showDebugButtons || totalDis > Screen.height / 3.5f) {
 			yDisplacement-=totalDis-(Screen.height/3.5f);
 			totalDis = Screen.height /3.5f;
 		}
-		else if (totalDis + ((currentButtonCount*1.5f)*buttonHeight) < Screen.height*2.0f / 3.0f) {
+		else 
+		if (totalDis + ((currentButtonCount*1.5f)*buttonHeight) < Screen.height*2.0f / 3.0f) {
 			yDisplacement-= (totalDis-((Screen.height*2.0f/3.0f)-(currentButtonCount*1.5f*buttonHeight)));
 			totalDis = (float)(Screen.height*2.0f /3.0f)-(currentButtonCount*1.5f*buttonHeight);
 		}
-		
-
-
-
-
 	}
 
 	bool checkButton(int num, string text)
@@ -163,14 +161,16 @@ public class LevelSelectScript : MonoBehaviour {
 		GUI.skin.button.active.background = buttonImage;
 		GUI.skin.button.font = Resources.Load<Font>( "UIFontRingBearer" );
 
-
-		if(customButton (10, 3, "DebugUnlock"))
+		if( showDebugButtons )
 		{
-			LevelNumberHolder.setLevel(1000);
-		}
-		if(customButton (11, 3, "DebugLock"))
-		{
-			LevelNumberHolder.setLevel(0);
+			if(customButton (10, 3, "DebugUnlock"))
+			{
+				LevelNumberHolder.setLevel(1000);
+			}
+			if(customButton (11, 3, "DebugLock"))
+			{
+				LevelNumberHolder.setLevel(0);
+			}
 		}
 
 
