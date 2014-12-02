@@ -46,6 +46,13 @@ public class PlayerController : MonoBehaviour {
 	
 	ShockwaveController shock;
 
+
+	private int buttonRows = 5;
+	private int buttonColumns = 4;
+	private int buttonHeight;
+	private int buttonWidth;
+
+
 	// Use this for initialization
 	void Start () {
 		dying = false;
@@ -436,12 +443,14 @@ public class PlayerController : MonoBehaviour {
 		GUI.skin.button.hover.background = buttonImage;
 		GUI.skin.button.active.background = buttonImage;
 
+		buttonWidth = Screen.width / buttonRows;
+		buttonHeight = Screen.height / buttonColumns;
 
-		if (GUI.Button(new Rect(10,Screen.height -50 , 150, 50), restartContect))
+		if (GUI.Button(new Rect(10,Screen.height -buttonHeight , buttonWidth, buttonHeight), restartContect))
         {
             loadLevel();
         }
-		if (GUI.Button(new Rect(170,Screen.height -50 , 150, 50), mainMenuContect))
+		if (GUI.Button(new Rect(10+buttonWidth,Screen.height -buttonHeight , buttonWidth, buttonHeight), mainMenuContect))
 		{
 			loadSelector();
 		}

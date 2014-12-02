@@ -24,7 +24,20 @@ public class GeneralButtonController : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if (GUI.Button(new Rect(Screen.width-30,0 , 30, 30), current))
+		int tempWidth = Screen.width / 12;
+		int tempHeight = Screen.height / 12;
+		int actualWidth = 0;
+
+		if (tempHeight > tempWidth)
+		{
+			actualWidth = tempHeight;
+		}
+		else
+		{
+			actualWidth = tempWidth;
+		}
+
+		if (GUI.Button(new Rect(Screen.width-actualWidth,0 , actualWidth, actualWidth), current))
 		{
 			muted=!muted;
 			
