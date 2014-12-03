@@ -47,8 +47,8 @@ public class PlayerController : MonoBehaviour {
 	ShockwaveController shock;
 
 
-	private int buttonRows = 5;
-	private int buttonColumns = 4;
+	private int buttonRows = 6;
+	private int buttonColumns = 6;
 	private int buttonHeight;
 	private int buttonWidth;
 
@@ -256,6 +256,9 @@ public class PlayerController : MonoBehaviour {
 				vSpeed = vSpeedLastTouch;
 				transform.FindChild("particle").GetComponent<ParticleSystem>().Play();
 				
+				GameObject.Find( "Mageshiro" ).GetComponent<Animator>().Play( "ThrustMagic", -1, 0 );
+				GameObject.Find( "Mageshiro" ).GetComponent<Animator>().speed = 1;
+				
 				switch( lastSwipe.direction )
 				{
 					case Direction.UP:
@@ -392,6 +395,9 @@ public class PlayerController : MonoBehaviour {
 				transform.position = transform.position + off;
 				actualPosition += off;
 				
+				if( !inAir )
+					GameObject.Find( "Mageshiro" ).GetComponent<Animator>().speed = hSpeed;
+				
 				if( timeInTween < compensateTweenTime )
 				{
 					transform.position = transform.position + (actualPosition-transform.position) * timeInTween/compensateTweenTime;
@@ -414,6 +420,11 @@ public class PlayerController : MonoBehaviour {
 					Application.LoadLevel( Application.loadedLevel );
 				}
 			}
+			else
+			{
+				GameObject.Find( "Mageshiro" ).GetComponent<Animator>().speed = 0;
+			}
+			
 			if (!tutWait) {
 				inAir = true;
 			}

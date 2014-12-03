@@ -33,7 +33,7 @@ public class CheckpointController : MonoBehaviour {
 		if (player != null) {
 						for (int i = 0; i < checkpoints.Count; i++) {
 								float dist = (player.transform.position - ((GameObject)checkpoints [i]).transform.position).sqrMagnitude;
-								if (dist < 6) {
+								if (dist < 7 && player.transform.position.x > ((GameObject)checkpoints [i]).transform.position.x) {
 										if (((GameObject)checkpoints [i]).GetComponent<CheckPointScript> ().goal) {
 											player.GetComponent<PlayerController>().completeLevel();
 											LevelNumberHolder.setHighestLevel();

@@ -112,6 +112,11 @@ public class SlopeController : MonoBehaviour {
 							{
 								player.transform.position = new Vector3( player.transform.position.x, ny, player.transform.position.z );
 								player.GetComponent<PlayerController>().actualPosition = player.transform.position;
+								if( player.GetComponent<PlayerController>().inAir )
+								{
+									GameObject.Find( "Mageshiro" ).GetComponent<Animator>().Play( "Moving" );
+									GameObject.Find( "Mageshiro" ).GetComponent<Animator>().speed = 1;
+								}
 								player.GetComponent<PlayerController>().inAir = false;
 								player.GetComponent<PlayerController>().airTime = 0;
 								player.GetComponent<PlayerController>().vSpeed = 0;

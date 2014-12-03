@@ -25,7 +25,7 @@ public class ShockwaveController : MonoBehaviour {
 		if( shouldPlay )
 		{
 			
-			float scale = 6 * (Mathf.Clamp( currentTime / ( aliveTime * percent * 0.5f ) , 0, 1 )) * (1-Mathf.Clamp( ( currentTime - aliveTime*(1-percent) ) / ( aliveTime * percent ) , 0, 1 ));
+			float scale = 2 * (Mathf.Clamp( currentTime / ( aliveTime * percent * 0.5f ) , 0, 1 )) * (1-Mathf.Clamp( ( currentTime - aliveTime*(1-percent) ) / ( aliveTime * percent ) , 0, 1 ));
 			transform.localScale = new Vector3( scale, scale, scale );
 			currentTime += Time.deltaTime;
 			if( currentTime > aliveTime )

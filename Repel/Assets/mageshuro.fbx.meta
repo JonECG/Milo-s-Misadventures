@@ -72,7 +72,229 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Float
+      takeName: Float
+      firstFrame: -1
+      lastFrame: 12
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body
+        weight: 1
+      - path: Armature/Body/Thigh_L
+        weight: 1
+      - path: Armature/Body/Thigh_L/Shin_L
+        weight: 1
+      - path: Armature/Body/Thigh_R
+        weight: 1
+      - path: Armature/Body/Thigh_R/Shin_R
+        weight: 1
+      - path: Armature/Elbow_L
+        weight: 1
+      - path: Armature/Elbow_R
+        weight: 1
+      - path: Armature/FootIK_L
+        weight: 1
+      - path: Armature/FootIK_L/Foot_L
+        weight: 1
+      - path: Armature/FootIK_R
+        weight: 1
+      - path: Armature/FootIK_R/Foot_R
+        weight: 1
+      - path: Armature/HandIK_L
+        weight: 1
+      - path: Armature/HandIK_R
+        weight: 1
+      - path: Armature/Knee_L
+        weight: 1
+      - path: Armature/Knee_R
+        weight: 1
+      - path: Armature/Neck
+        weight: 1
+      - path: Armature/Neck/Head
+        weight: 1
+      - path: Armature/Neck/Shoulder_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_L/Hand_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_R
+        weight: 1
+      - path: Armature/Neck/Shoulder_R/Hand_R
+        weight: 1
+      - path: Cube_002_Cube_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: FloatMove
+      takeName: FloatMove
+      firstFrame: -1
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body
+        weight: 1
+      - path: Armature/Body/Thigh_L
+        weight: 1
+      - path: Armature/Body/Thigh_L/Shin_L
+        weight: 1
+      - path: Armature/Body/Thigh_R
+        weight: 1
+      - path: Armature/Body/Thigh_R/Shin_R
+        weight: 1
+      - path: Armature/Elbow_L
+        weight: 1
+      - path: Armature/Elbow_R
+        weight: 1
+      - path: Armature/FootIK_L
+        weight: 1
+      - path: Armature/FootIK_L/Foot_L
+        weight: 1
+      - path: Armature/FootIK_R
+        weight: 1
+      - path: Armature/FootIK_R/Foot_R
+        weight: 1
+      - path: Armature/HandIK_L
+        weight: 1
+      - path: Armature/HandIK_R
+        weight: 1
+      - path: Armature/Knee_L
+        weight: 1
+      - path: Armature/Knee_R
+        weight: 1
+      - path: Armature/Neck
+        weight: 1
+      - path: Armature/Neck/Head
+        weight: 1
+      - path: Armature/Neck/Shoulder_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_L/Hand_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_R
+        weight: 1
+      - path: Armature/Neck/Shoulder_R/Hand_R
+        weight: 1
+      - path: Cube_002_Cube_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: ThrustMagic
+      takeName: ThrustMagic
+      firstFrame: 0
+      lastFrame: 11.3999996
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Body
+        weight: 1
+      - path: Armature/Body/Thigh_L
+        weight: 1
+      - path: Armature/Body/Thigh_L/Shin_L
+        weight: 1
+      - path: Armature/Body/Thigh_R
+        weight: 1
+      - path: Armature/Body/Thigh_R/Shin_R
+        weight: 1
+      - path: Armature/Elbow_L
+        weight: 1
+      - path: Armature/Elbow_R
+        weight: 1
+      - path: Armature/FootIK_L
+        weight: 1
+      - path: Armature/FootIK_L/Foot_L
+        weight: 1
+      - path: Armature/FootIK_R
+        weight: 1
+      - path: Armature/FootIK_R/Foot_R
+        weight: 1
+      - path: Armature/HandIK_L
+        weight: 1
+      - path: Armature/HandIK_R
+        weight: 1
+      - path: Armature/Knee_L
+        weight: 1
+      - path: Armature/Knee_R
+        weight: 1
+      - path: Armature/Neck
+        weight: 1
+      - path: Armature/Neck/Head
+        weight: 1
+      - path: Armature/Neck/Shoulder_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_L/Hand_L
+        weight: 1
+      - path: Armature/Neck/Shoulder_R
+        weight: 1
+      - path: Armature/Neck/Shoulder_R/Hand_R
+        weight: 1
+      - path: Cube_002_Cube_003
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
     isReadable: 1
   meshes:
     lODScreenPercentages: []
