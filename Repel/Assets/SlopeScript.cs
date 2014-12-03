@@ -11,6 +11,7 @@ public class SlopeScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GenMesh();
+		transform.position += new Vector3( 0, 0, Random.value * 0.01f );
 		GameObject.Find( "LevelController" ).GetComponent<LevelController>().slopes.add ( this.gameObject );
 	}
 	
