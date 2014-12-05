@@ -123,6 +123,7 @@ public class PlayerController : MonoBehaviour {
 			Debug.Log( "Swiped" );
 			lastSwipe = s;
 			lastSwipeTime = Time.time;
+
 			audio.PlayOneShot(swipeSound,3.0f);
 			Debug.Log( s.direction );
 		}

@@ -10,16 +10,29 @@ public class GeneralButtonController : MonoBehaviour {
 
 	private AudioSource[] sources;
 
-	bool muted = false;
+	private static bool muted = false;
 	// Use this for initialization
 	void Start () {
 		sources = GameObject.FindObjectsOfType<AudioSource> ();
-		current = unMuted;
+		current = (GeneralButtonController.muted) ? mutedTexture : unMuted;
+		if (GeneralButtonController.muted) {
+			muteAll();
+				}
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	void muteAll()
+	{
+		for(int i = 0 ; i<sources.Length;i++)
+		{
+			sources[i].mute=muted;
+		}
 	}
 
 	void OnGUI()
