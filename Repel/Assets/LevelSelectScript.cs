@@ -213,13 +213,12 @@ public class LevelSelectScript : MonoBehaviour {
 		lockButtonHelper( place++, "Hold it!", "leftTutorial" );
 		lockButtonHelper( place++, "Closed Spaces", "AJLevel" );
 		lockButtonHelper( place++, "Fanning Out", "AJLevel2" );
-		lockButtonHelper( place++, "Combined Skills", "AJLevel3" );
 		lockButtonHelper( place++, "Forkroads", "ColterMidLevel" );
 		lockButtonHelper( place++, "Dash up", "TalanDash" );
 		lockButtonHelper( place++, "Acrobatics", "AJLevel4" );
 		lockButtonHelper( place++, "Leap of Faith", "leapoffaith" );
 		lockButtonHelper( place++, "Shatter Fun", "AJLevel5" );
-
+		lockButtonHelper( place++, "Combined Skills", "AJLevel3" );
 		
 		
 		Matrix4x4 matrixBackup = GUI.matrix;
