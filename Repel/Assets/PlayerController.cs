@@ -186,6 +186,7 @@ public class PlayerController : MonoBehaviour {
 	float deathTimer = 0.0f;
 	// Update is called once per frame
 	void Update () {
+	Screen.showCursor = false;
 		bool hadTouched = !inAir;
 	
 
